@@ -11,7 +11,7 @@ export interface ProjectIterations<C extends boolean = false> {
       search?: string;
       includeAncestors?: boolean;
     } & BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<IterationSchema[], C, E, void>>
+  ): Promise<GitlabAPIResponse<IterationSchema[], C, E, void>>;
 }
 
 export class ProjectIterations<C extends boolean = false> extends ResourceIterations<C> {

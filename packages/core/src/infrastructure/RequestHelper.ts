@@ -77,10 +77,11 @@ export type GitlabAPIExpandedResponse<T, E extends boolean, P> = E extends true
     : ExpandedResponse<T>
   : T;
 
-export type GitlabAPISingleResponse<T, C extends boolean | void, E extends boolean> = T extends Record<
-  string,
-  unknown
->
+export type GitlabAPISingleResponse<
+  T,
+  C extends boolean | void,
+  E extends boolean,
+> = T extends Record<string, unknown>
   ? GitlabAPIExpandedResponse<CamelizedResponse<T, C>, E, void>
   : GitlabAPIExpandedResponse<T, E, void>;
 

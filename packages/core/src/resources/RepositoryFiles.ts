@@ -1,8 +1,9 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import { CommitSchema } from './Commits';
-import { RequestHelper, BaseRequestOptions, endpoint, Sudo } from '../infrastructure';
+import { endpoint, RequestHelper } from '../infrastructure';
+import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { CommitSchema } from './Commits';
 
-export interface RepositoryFileExtendedSchema extends Record<string, unknown> {
+export interface RepositoryFileExpandedSchema extends Record<string, unknown> {
   file_name: string;
   file_path: string;
   size: number;
@@ -26,14 +27,14 @@ export interface RepositoryFileSchema extends Record<string, unknown> {
 }
 
 export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> {
-  create(
+  create<E extends boolean = false>(
     projectId: string | number,
     filePath: string,
     branch: string,
     content: string,
     commitMessage: string,
-    options?: BaseRequestOptions,
-  ) {
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<RepositoryFileSchema, C, E, void>> {
     return RequestHelper.post<RepositoryFileSchema>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}`,
@@ -46,14 +47,14 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     );
   }
 
-  edit(
+  edit<E extends boolean = false>(
     projectId: string | number,
     filePath: string,
     branch: string,
     content: string,
     commitMessage: string,
-    options?: BaseRequestOptions,
-  ) {
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<RepositoryFileSchema, C, E, void>> {
     return RequestHelper.put<RepositoryFileSchema>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}`,
@@ -66,13 +67,13 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     );
   }
 
-  remove(
+  remove<E extends boolean = false>(
     projectId: string | number,
     filePath: string,
     branch: string,
     commitMessage: string,
-    options?: BaseRequestOptions,
-  ) {
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>> {
     return RequestHelper.del()(this, endpoint`projects/${projectId}/repository/files/${filePath}`, {
       branch,
       commitMessage,
@@ -80,8 +81,13 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     });
   }
 
-  show(projectId: string | number, filePath: string, ref: string, options?: Sudo) {
-    return RequestHelper.get<RepositoryFileExtendedSchema>()(
+  show<E extends boolean = false>(
+    projectId: string | number,
+    filePath: string,
+    ref: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<RepositoryFileExpandedSchema, C, E, void>> {
+    return RequestHelper.get<RepositoryFileExpandedSchema>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}`,
       {
@@ -91,7 +97,11 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     );
   }
 
-  showBlame(projectId: string | number, filePath: string, options?: Sudo) {
+  showBlame<E extends boolean = false>(
+    projectId: string | number,
+    filePath: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<RepositoryFileBlameSchema[], C, E, void>> {
     return RequestHelper.get<RepositoryFileBlameSchema[]>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}/blame`,
@@ -99,11 +109,15 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     );
   }
 
-  showRaw(projectId: string | number, filePath: string, options?: BaseRequestOptions) {
-    return RequestHelper.get()(
+  showRaw<E extends boolean = false>(
+    projectId: string | number,
+    filePath: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
+    return RequestHelper.get<unknown>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}/raw`,
       options,
-    ) as unknown as Promise<Blob>;
+    );
   }
 }

@@ -29,23 +29,32 @@ export class ProtectedTags<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  protect<E extends boolean = false>(projectId: string | number, tagName: string, options?: { createAccessLevel?: string } & Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<ProtectedTagSchema, C, E, void>> {
+  protect<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: { createAccessLevel?: string } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<ProtectedTagSchema, C, E, void>> {
     const { sudo, showExpanded, ...opts } = options || {};
 
     return RequestHelper.post<ProtectedTagSchema>()(
       this,
-      endpoint`projects/${projectId}/protected_tags`, {
+      endpoint`projects/${projectId}/protected_tags`,
+      {
         query: {
           name: tagName,
-          ...opts
+          ...opts,
         },
         sudo,
-        showExpanded
-      }
+        showExpanded,
+      },
     );
   }
 
-  show<E extends boolean = false>(projectId: string | number, tagName: string, options?: Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<ProtectedTagSchema, C, E, void>> {
+  show<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<ProtectedTagSchema, C, E, void>> {
     return RequestHelper.get<ProtectedTagSchema>()(
       this,
       endpoint`projects/${projectId}/protected_tags/${tagName}`,
@@ -53,7 +62,11 @@ export class ProtectedTags<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  unprotect<E extends boolean = false>(projectId: string | number, tagName: string, options?: Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<void, C, E, void>>  {
+  unprotect<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>> {
     return RequestHelper.del()(
       this,
       endpoint`projects/${projectId}/protected_tags/${tagName}`,

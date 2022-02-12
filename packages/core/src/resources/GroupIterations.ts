@@ -11,7 +11,7 @@ export interface GroupIterations<C extends boolean = false> {
       search?: string;
       includeAncestors?: boolean;
     } & BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<IterationSchema[], C, E, void>>
+  ): Promise<GitlabAPIResponse<IterationSchema[], C, E, void>>;
 }
 
 export class GroupIterations<C extends boolean = false> extends ResourceIterations<C> {

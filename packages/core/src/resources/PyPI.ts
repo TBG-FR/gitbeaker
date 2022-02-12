@@ -11,10 +11,11 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }:  (
+    }: (
       | { projectId: string | number; groupId?: never }
       | { groupId: string | number; projectId?: never }
-    )  & ShowExpanded<E>,
+    ) &
+      ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
     let url = endpoint`packages/pypi/files/${sha}/${fileIdentifier}`;
 
@@ -35,10 +36,11 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }:  (
+    }: (
       | { projectId: string | number; groupId?: never }
       | { groupId: string | number; projectId?: never }
-    )  & ShowExpanded<E>,
+    ) &
+      ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<string, C, E, void>> {
     let url = `packages/pypi/simple/${packageName}`;
 
@@ -64,14 +66,10 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
       contentType: Mime.getType(filename),
     };
 
-    return RequestHelper.put<unknown>()(
-      this,
-      endpoint`projects/${projectId}/packages/pypi`,
-      {
-        isForm: true,
-        ...options,
-        file: [content, meta],
-      },
-    );
+    return RequestHelper.put<unknown>()(this, endpoint`projects/${projectId}/packages/pypi`, {
+      isForm: true,
+      ...options,
+      file: [content, meta],
+    });
   }
 }

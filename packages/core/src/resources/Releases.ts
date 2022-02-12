@@ -63,7 +63,10 @@ export class Releases<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  create<E extends boolean = false>(projectId: string | number, options?: BaseRequestOptions<E>): Promise<GitlabAPIResponse<ReleaseSchema, C, E, void>> {
+  create<E extends boolean = false>(
+    projectId: string | number,
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<ReleaseSchema, C, E, void>> {
     return RequestHelper.post<ReleaseSchema>()(
       this,
       endpoint`projects/${projectId}/releases`,
@@ -71,7 +74,11 @@ export class Releases<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  createEvidence<E extends boolean = false>(projectId: string | number, tagName: string, options?: Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<number, C, E, void>> {
+  createEvidence<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<number, C, E, void>> {
     return RequestHelper.post<number>()(
       this,
       endpoint`projects/${projectId}/releases/${tagName}/evidence`,
@@ -91,11 +98,19 @@ export class Releases<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  remove<E extends boolean = false>(projectId: string | number, tagName: string, options?: Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<void, C, E, void>> {
+  remove<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>> {
     return RequestHelper.del()(this, endpoint`projects/${projectId}/releases/${tagName}`, options);
   }
 
-  show<E extends boolean = false>(projectId: string | number, tagName: string, options?: {includeHtmlDescription?: boolean } & Sudo & ShowExpanded<E>): Promise<GitlabAPIResponse<ReleaseSchema, C, E, void>> {
+  show<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: { includeHtmlDescription?: boolean } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<ReleaseSchema, C, E, void>> {
     return RequestHelper.get<ReleaseSchema>()(
       this,
       endpoint`projects/${projectId}/releases/${tagName}`,
