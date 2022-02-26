@@ -22,3 +22,4 @@ export { ResourceProtectedEnvironments } from './ResourceProtectedEnvironments';
 export { ResourceIterationEvents } from './ResourceIterationEvents';
 export { ResourceLabelEvents } from './ResourceLabelEvents';
 export { ResourceMilestoneEvents } from './ResourceMilestoneEvents';
+export { ResourceStateEvents } from './ResourceStateEvents';
