@@ -18,3 +18,7 @@ export { ResourcePushRules } from './ResourcePushRules';
 export { ResourceRepositoryStorageMoves } from './ResourceRepositoryStorageMoves';
 export { ResourceInvitations } from './ResourceInvitations';
 export { ResourceIterations } from './ResourceIterations';
+export { ResourceProtectedEnvironments } from './ResourceProtectedEnvironments';
+export { ResourceIterationEvents } from './ResourceIterationEvents';
+export { ResourceLabelEvents } from './ResourceLabelEvents';
+export { ResourceMilestoneEvents } from './ResourceMilestoneEvents';

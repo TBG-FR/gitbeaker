@@ -26,3 +26,10 @@ export type { PushRulesSchema } from './ResourcePushRules';
 export type { RepositoryStorageMoveSchema } from './ResourceRepositoryStorageMoves';
 export type { InvitationSchema } from './ResourceInvitations';
 export type { IterationSchema } from './ResourceIterations';
+export type {
+  ProtectedEnvironmentAccessLevel,
+  ProtectedEnviromentSchema,
+} from './ResourceProtectedEnvironments';
+export type { IterationEventSchema } from './ResourceIterationEvents';
+export type { LabelEventSchema } from './ResourceLabelEvents';
+export type { MilestoneEventSchema } from './ResourceMilestoneEvents';

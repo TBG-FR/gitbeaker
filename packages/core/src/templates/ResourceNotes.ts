@@ -2,7 +2,6 @@ import { BaseResource } from '@gitbeaker/requester-utils';
 import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type {
-  BaseRequestOptions,
   PaginatedRequestOptions,
   Sudo,
   ShowExpanded,

@@ -13,8 +13,7 @@ export interface ApplicationPlanLimitSchema extends Record<string, unknown> {
   terraform_module_max_file_size: number;
 }
 
-export interface ApplicationPlanLimitOptions
-  extends Partial<Camelize<ApplicationPlanLimitSchema>> {}
+export type ApplicationPlanLimitOptions = Partial<Camelize<ApplicationPlanLimitSchema>>;
 
 export class ApplicationPlanLimits<C extends boolean = false> extends BaseResource<C> {
   show<E extends boolean = false>(

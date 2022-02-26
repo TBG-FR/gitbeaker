@@ -44,7 +44,7 @@ export class ResourceProtectedEnvironments<C extends boolean = false> extends Ba
       {
         name,
         deployAccessLevel,
-        ...options
+        ...options,
       },
     );
   }
@@ -66,10 +66,6 @@ export class ResourceProtectedEnvironments<C extends boolean = false> extends Ba
     name: string,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>> {
-    return RequestHelper.del()(
-      this,
-      `${resourceId}/protected_environments/${name}`,
-      options,
-    );
+    return RequestHelper.del()(this, `${resourceId}/protected_environments/${name}`, options);
   }
 }

@@ -69,6 +69,7 @@ export class Groups<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'keyset'>(
     options: { statistics: true } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<(GroupSchema & { statistics: GroupStatisticsSchema })[], C, E, P>>;
+
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'keyset'>(
     options?: PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<GroupSchema[], C, E, P>> {
@@ -175,6 +176,7 @@ export class Groups<C extends boolean = false> extends BaseResource<C> {
     groupId: string | number,
     options: { statistics: true } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<(GroupSchema & { statistics: GroupStatisticsSchema })[], C, E, P>>;
+
   showDescendantGroups<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     groupId: string | number,
     options?: PaginatedRequestOptions<E, P>,
@@ -190,6 +192,7 @@ export class Groups<C extends boolean = false> extends BaseResource<C> {
     groupId: string | number,
     options: { simple: true; sharedOnly?: boolean } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<CondensedProjectSchema[], C, E, P>>;
+
   showProjects<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     groupId: string | number,
     options?: PaginatedRequestOptions<E, P>,
@@ -201,6 +204,7 @@ export class Groups<C extends boolean = false> extends BaseResource<C> {
     groupId: string | number,
     options: { simple: true } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<CondensedProjectSchema[], C, E, P>>;
+
   showSharedProjects<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     groupId: string | number,
     options: PaginatedRequestOptions<E, P>,
@@ -212,6 +216,7 @@ export class Groups<C extends boolean = false> extends BaseResource<C> {
     groupId: string | number,
     options: { statistics: true } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<(GroupSchema & { statistics: GroupStatisticsSchema })[], C, E, P>>;
+
   showSubgroups<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     groupId: string | number,
     options?: PaginatedRequestOptions<E, P>,
