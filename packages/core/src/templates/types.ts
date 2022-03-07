@@ -34,3 +34,4 @@ export type { IterationEventSchema } from './ResourceIterationEvents';
 export type { LabelEventSchema } from './ResourceLabelEvents';
 export type { MilestoneEventSchema } from './ResourceMilestoneEvents';
 export type { StateEventSchema } from './ResourceStateEvents';
+export type { WeightEventSchema } from './ResourceWeightEvents';
