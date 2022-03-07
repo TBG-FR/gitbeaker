@@ -102,13 +102,9 @@ export class Jobs<C extends boolean = false> extends BaseResource<C> {
       ...options
     }: { pipelineId?: number; scope?: JobScope } & Sudo & ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<JobSchema[], C, E, void>> {
-    let url: string;
-
-    if (pipelineId) {
-      url = endpoint`projects/${projectId}/pipelines/${pipelineId}/jobs`;
-    } else {
-      url = endpoint`projects/${projectId}/jobs`;
-    }
+    const url = pipelineId
+      ? endpoint`projects/${projectId}/pipelines/${pipelineId}/jobs`
+      : endpoint`projects/${projectId}/jobs`;
 
     return RequestHelper.get<JobSchema[]>()(this, url, { ...options });
   }

@@ -22,11 +22,11 @@ export class PagesDomains<C extends boolean = false> extends BaseResource<C> {
   }: { projectId?: string | number } & Sudo & ShowExpanded<E> = {}): Promise<
     GitlabAPIResponse<PagesDomainSchema[], C, E, void>
   > {
-    const url = projectId ? endpoint`projects/${projectId}/` : '';
+    const prefix = projectId ? endpoint`projects/${projectId}/` : '';
 
     return RequestHelper.get<PagesDomainSchema[]>()(
       this,
-      `${url}pages/domains`,
+      `${prefix}pages/domains`,
       options as Sudo & ShowExpanded<E>,
     );
   }

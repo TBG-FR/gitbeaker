@@ -1,6 +1,6 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { PaginatedRequestOptions, GitlabAPIResponse } from '../infrastructure';
+import type { EitherOrNone, PaginatedRequestOptions, GitlabAPIResponse } from '../infrastructure';
 import { UserSchema } from './Users';
 
 export interface EventOptions {
@@ -43,18 +43,15 @@ export class Events<C extends boolean = false> extends BaseResource<C> {
       projectId,
       userId,
       ...options
-    }: { projectId?: string | number; userId: string | number } & PaginatedRequestOptions<E, P> &
+    }: EitherOrNone<{ projectId?: string | number }, { userId: string | number }> &
+      PaginatedRequestOptions<E, P> &
       EventOptions = {} as any,
   ): Promise<GitlabAPIResponse<EventSchema[], C, E, P>> {
     let url: string;
 
-    if (projectId) {
-      url = endpoint`projects/${projectId}/events`;
-    } else if (userId) {
-      url = endpoint`users/${userId}/events`;
-    } else {
-      url = 'events';
-    }
+    if (projectId) url = endpoint`projects/${projectId}/events`;
+    else if (userId) url = endpoint`users/${userId}/events`;
+    else url = 'events';
 
     return RequestHelper.get<EventSchema[]>()(
       this,

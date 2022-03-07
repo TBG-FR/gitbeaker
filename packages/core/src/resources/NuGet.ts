@@ -1,7 +1,7 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { Either, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export interface NuGetPackageIndexSchema extends Record<string, unknown> {
   versions: string[];
@@ -68,15 +68,16 @@ export interface NuGetSearchResultsSchema extends Record<string, unknown> {
   data: NuGetSearchResultSchema[];
 }
 
-function url({ projectId, groupId }) {
-  if (projectId) {
-    return endpoint`/projects/${projectId}/packages/debian`;
-  }
-  if (groupId) {
-    return endpoint`/groups/${groupId}/-/packages/debian`;
-  }
+function url({
+  projectId,
+  groupId,
+}: { projectId?: string | number; groupId?: string | number } = {}): string {
+  if (projectId) return endpoint`/projects/${projectId}/packages/nuget`;
+  if (groupId) return endpoint`/groups/${groupId}/-/packages/nuget`;
 
-  throw new Error('groupId or projectId must be given');
+  throw new Error(
+    'Missing required argument. Please supply a projectId or a groupId in the options parameter',
+  );
 }
 
 export class NuGet<C extends boolean = false> extends BaseResource<C> {
@@ -100,10 +101,11 @@ export class NuGet<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) & { skip?: number; take?: number; prerelease?: boolean } & ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & {
+      skip?: number;
+      take?: number;
+      prerelease?: boolean;
+    } & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<NuGetSearchResultsSchema, C, E, void>> {
     const uri = url({ projectId, groupId });
     return RequestHelper.get<NuGetSearchResultsSchema>()(this, `${uri}/query`, { q, ...options });
@@ -115,13 +117,10 @@ export class NuGet<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<NuGetServiceMetadataSchema, C, E, void>> {
     const uri = url({ projectId, groupId });
+
     return RequestHelper.get<NuGetServiceMetadataSchema>()(
       this,
       `${uri}/metadata/${packageName}/index`,
@@ -145,10 +144,7 @@ export class NuGet<C extends boolean = false> extends BaseResource<C> {
     projectId,
     groupId,
     ...options
-  }: (
-    | { projectId: string | number; groupId: never }
-    | { groupId: string | number; projectId: never }
-  ) &
+  }: Either<{ projectId: string | number }, { groupId: string | number }> &
     ShowExpanded<E>): Promise<GitlabAPIResponse<NuGetServiceIndexSchema, C, E, void>> {
     const uri = url({ projectId, groupId });
     return RequestHelper.get<NuGetServiceIndexSchema>()(
@@ -165,11 +161,7 @@ export class NuGet<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<NuGetServiceMetadataVersionSchema, C, E, void>> {
     const uri = url({ projectId, groupId });
     return RequestHelper.get<NuGetServiceMetadataVersionSchema>()(

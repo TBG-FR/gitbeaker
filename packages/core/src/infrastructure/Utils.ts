@@ -15,6 +15,33 @@ export interface UploadMetadataOptions {
   contentType?: string;
 }
 
+export type Never<T> = {
+  [P in keyof T]?: never;
+};
+
+export type Only<T, U> = Required<T> & Never<U>;
+export type Only4<T, U, V, W> = Required<T> & Never<U> & Never<V> & Never<W>;
+export type OnlyOrNone<T, U> = Partial<T> & Never<U>;
+export type OnlyOrNone3<T, U, V> = Partial<T> & Never<U> & Never<V>;
+export type OnlyOrNone4<T, U, V, W> = Partial<T> & Never<U> & Never<V> & Never<W>;
+
+export type Either<T, U> = Only<T, U> | Only<U, T>;
+export type Either4<T, U, V, W> =
+  | Only4<T, U, V, W>
+  | Only4<U, T, V, W>
+  | Only4<V, T, U, W>
+  | Only4<W, T, U, V>;
+export type EitherOrNone<T, U> = OnlyOrNone<T, U> | OnlyOrNone<U, T>;
+export type EitherOrNone3<T, U, V> =
+  | OnlyOrNone3<T, U, V>
+  | OnlyOrNone3<U, T, V>
+  | OnlyOrNone3<V, T, U>;
+export type EitherOrNone4<T, U, V, W> =
+  | OnlyOrNone4<T, U, V, W>
+  | OnlyOrNone4<U, T, V, W>
+  | OnlyOrNone4<V, T, U, W>
+  | OnlyOrNone4<W, T, U, V>;
+
 export function appendFormFromObject(object: Record<string, unknown>): FormData {
   /* eslint @typescript-eslint/ban-ts-comment: 0 */
   // @ts-ignore

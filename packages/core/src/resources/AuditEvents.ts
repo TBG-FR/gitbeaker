@@ -1,6 +1,6 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { EitherOrNone, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export interface AuditEventSchema extends Record<string, unknown> {
   id: number;
@@ -19,30 +19,21 @@ export interface AuditEventSchema extends Record<string, unknown> {
   created_at: string;
 }
 
-const url = ({
+function url({
   projectId,
   groupId,
-}: {
-  projectId?: string | number;
-  groupId?: string | number;
-}) => {
+}: { projectId?: string | number; groupId?: string | number } = {}): string {
   let prefix = '';
 
-  if (projectId) {
-    prefix = endpoint`projects/${projectId}/`;
-  } else if (groupId) {
-    prefix = endpoint`groups/${groupId}/`;
-  }
+  if (projectId) prefix = endpoint`projects/${projectId}/`;
+  else if (groupId) prefix = endpoint`groups/${groupId}/`;
 
   return `${prefix}audit_events`;
-};
+}
 
 export class AuditEvents<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
-    options: (
-      | { projectId?: string | number; groupId?: never }
-      | { groupId?: string | number; projectId?: never }
-    ) &
+    options: EitherOrNone<{ projectId?: string | number }, { groupId?: string | number }> &
       Sudo &
       ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<AuditEventSchema[], C, E, void>> {
@@ -53,10 +44,7 @@ export class AuditEvents<C extends boolean = false> extends BaseResource<C> {
 
   show<E extends boolean = false>(
     auditEventId: number,
-    options: (
-      | { projectId?: string | number; groupId?: never }
-      | { groupId?: string | number; projectId?: never }
-    ) &
+    options: EitherOrNone<{ projectId?: string | number }, { groupId?: string | number }> &
       Sudo &
       ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<AuditEventSchema, C, E, void>> {

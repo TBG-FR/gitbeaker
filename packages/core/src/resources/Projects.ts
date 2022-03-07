@@ -132,11 +132,13 @@ export class Projects<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'keyset'>(
     options: { simple: true } & PaginatedRequestOptions<E, P>,
   ): Promise<GitlabAPIResponse<ProjectSchema[], C, E, P>>;
+
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'keyset'>(
     options: { statistics: true } & PaginatedRequestOptions<E, P>,
   ): Promise<
     GitlabAPIResponse<(ExpandedProjectSchema & { statistics: ProjectStatisticsSchema })[], C, E, P>
   >;
+
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'keyset'>(
     {
       userId,
@@ -323,6 +325,7 @@ export class Projects<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     options: { simple: true } & BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<ProjectSchema[], C, E, void>>;
+
   showForks<E extends boolean = false>(
     projectId: string | number,
     options: { statistics: true } & BaseRequestOptions<E>,
@@ -334,6 +337,7 @@ export class Projects<C extends boolean = false> extends BaseResource<C> {
       void
     >
   >;
+
   showForks<E extends boolean = false>(
     projectId: string | number,
     options?: BaseRequestOptions<E>,

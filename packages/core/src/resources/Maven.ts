@@ -1,7 +1,7 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { EitherOrNone, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export class Maven<C extends boolean = false> extends BaseResource<C> {
   downloadPackageFile<E extends boolean = false>(
@@ -11,15 +11,12 @@ export class Maven<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: { projectId: string | number; groupId: string | number } & ShowExpanded<E>,
+    }: EitherOrNone<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
     let url = endpoint`packages/maven/${path}/${filename}`;
 
-    if (projectId) {
-      url = endpoint`projects/${projectId}/${url}`;
-    } else if (groupId) {
-      url = endpoint`groups/${groupId}/-/${url}`;
-    }
+    if (projectId) url = endpoint`projects/${projectId}/${url}`;
+    else if (groupId) url = endpoint`groups/${groupId}/-/${url}`;
 
     return RequestHelper.get<Blob>()(this, url, options as ShowExpanded<E>);
   }

@@ -21,11 +21,8 @@ export interface NPMPackageMetadataSchema extends Record<string, unknown> {
   };
 }
 
-function url(projectId?: string | number) {
-  if (projectId) {
-    return endpoint`/projects/${projectId}/packages/npm`;
-  }
-  return 'packages/npm';
+function url(projectId?: string | number): string {
+  return projectId ? endpoint`/projects/${projectId}/packages/npm` : 'packages/npm';
 }
 
 export class NPM<C extends boolean = false> extends BaseResource<C> {
@@ -47,9 +44,13 @@ export class NPM<C extends boolean = false> extends BaseResource<C> {
     tag: string,
     options?: { projectId?: string | number } & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>> {
-    const uri = url(options?.projectId);
+    const prefix = url(options?.projectId);
 
-    return RequestHelper.del()(this, `${uri}/-/package/${packageName}/dist-tags/${tag}`, options);
+    return RequestHelper.del()(
+      this,
+      `${prefix}/-/package/${packageName}/dist-tags/${tag}`,
+      options,
+    );
   }
 
   setDistTag<E extends boolean = false>(
@@ -57,11 +58,11 @@ export class NPM<C extends boolean = false> extends BaseResource<C> {
     tag: string,
     options?: { projectId?: string | number } & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>> {
-    const uri = url(options?.projectId);
+    const prefix = url(options?.projectId);
 
     return RequestHelper.put<void>()(
       this,
-      `${uri}/-/package/${packageName}/dist-tags/${tag}`,
+      `${prefix}/-/package/${packageName}/dist-tags/${tag}`,
       options,
     );
   }
@@ -70,11 +71,11 @@ export class NPM<C extends boolean = false> extends BaseResource<C> {
     packageName: string,
     options?: { projectId?: string | number } & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Record<string, string>, C, E, void>> {
-    const uri = url(options?.projectId);
+    const prefix = url(options?.projectId);
 
     return RequestHelper.get<Record<string, string>>()(
       this,
-      `${uri}/-/package/${packageName}/dist-tags`,
+      `${prefix}/-/package/${packageName}/dist-tags`,
       options,
     );
   }
@@ -83,9 +84,9 @@ export class NPM<C extends boolean = false> extends BaseResource<C> {
     packageName: string,
     options?: { projectId?: string | number } & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<NPMPackageMetadataSchema, C, E, void>> {
-    const uri = url(options?.projectId);
+    const prefix = url(options?.projectId);
 
-    return RequestHelper.get<NPMPackageMetadataSchema>()(this, `${uri}/${packageName}`, options);
+    return RequestHelper.get<NPMPackageMetadataSchema>()(this, `${prefix}/${packageName}`, options);
   }
 
   uploadPackageFile<E extends boolean = false>(

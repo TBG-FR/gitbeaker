@@ -1,6 +1,6 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { Either4, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 import type { JobSchema } from './Jobs';
 
 export class JobArtifacts<C extends boolean = false> extends BaseResource<C> {
@@ -13,11 +13,9 @@ export class JobArtifacts<C extends boolean = false> extends BaseResource<C> {
       ref,
       job,
       ...options
-    }: (
-      | { jobId?: number; ref?: never; job?: never; artifactPath?: never }
-      | { jobId: number; artifactPath: string; ref: never; job: never }
-      | { artifactPath: string; ref: string; job: string; jobId: never }
-    ) & { jobToken?: string } & Sudo &
+    }: Either4<{ jobId?: number }, { ref: string }, { job: string }, { artifactPath: string }> & {
+      jobToken?: string;
+    } & Sudo &
       ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
     if (!this.headers['job-token'] && !jobToken)

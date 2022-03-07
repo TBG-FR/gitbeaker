@@ -64,14 +64,13 @@ export interface PipelineVariableSchema extends Record<string, unknown> {
   value: string;
 }
 
-export interface PipelineTestReportSchema extends Record<string, unknown> {
-  total_time: number;
-  total_count: number;
-  success_count: number;
-  failed_count: number;
-  skipped_count: number;
-  error_count: number;
-  test_suites?: PipelineTestSuiteSchema[];
+export interface PipelineTestCaseSchema {
+  status: string;
+  name: string;
+  classname: string;
+  execution_time: number;
+  system_output?: string;
+  stack_trace?: string;
 }
 
 export interface PipelineTestSuiteSchema {
@@ -85,13 +84,14 @@ export interface PipelineTestSuiteSchema {
   test_cases?: PipelineTestCaseSchema[];
 }
 
-export interface PipelineTestCaseSchema {
-  status: string;
-  name: string;
-  classname: string;
-  execution_time: number;
-  system_output?: string;
-  stack_trace?: string;
+export interface PipelineTestReportSchema extends Record<string, unknown> {
+  total_time: number;
+  total_count: number;
+  success_count: number;
+  failed_count: number;
+  skipped_count: number;
+  error_count: number;
+  test_suites?: PipelineTestSuiteSchema[];
 }
 
 export interface PipelineTestReportSummarySchema extends Record<string, unknown> {

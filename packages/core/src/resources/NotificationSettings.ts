@@ -1,6 +1,12 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type {
+  EitherOrNone,
+  BaseRequestOptions,
+  Sudo,
+  ShowExpanded,
+  GitlabAPIResponse,
+} from '../infrastructure';
 
 export type NotificationSettingLevel =
   | 'disabled'
@@ -35,30 +41,21 @@ export interface NotificationSettingSchema extends Record<string, unknown> {
   notification_email: string;
 }
 
-const url = ({
+function url({
   projectId,
   groupId,
-}: {
-  projectId?: string | number;
-  groupId?: string | number;
-}) => {
+}: { projectId?: string | number; groupId?: string | number } = {}): string {
   let prefix = '';
 
-  if (projectId) {
-    prefix = endpoint`projects/${projectId}/`;
-  } else if (groupId) {
-    prefix = endpoint`groups/${groupId}/`;
-  }
+  if (projectId) prefix = endpoint`/projects/${projectId}/`;
+  if (groupId) prefix = endpoint`/groups/${groupId}/`;
 
   return `${prefix}notification_settings`;
-};
+}
 
 export class NotificationSettings<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
-    options: (
-      | { projectId?: string | number; groupId?: never }
-      | { groupId?: string | number; projectId?: never }
-    ) &
+    options: EitherOrNone<{ projectId: string | number }, { groupId: string | number }> &
       Sudo &
       ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<NotificationSettingSchema[], C, E, void>> {
@@ -68,10 +65,7 @@ export class NotificationSettings<C extends boolean = false> extends BaseResourc
   }
 
   edit<E extends boolean = false>(
-    options: (
-      | { projectId?: string | number; groupId?: never }
-      | { groupId?: string | number; projectId?: never }
-    ) &
+    options: EitherOrNone<{ projectId: string | number }, { groupId: string | number }> &
       BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<NotificationSettingSchema, C, E, void>> {
     const uri = url(options);

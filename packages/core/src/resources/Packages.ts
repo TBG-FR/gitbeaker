@@ -1,6 +1,6 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { Either, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 import type { PipelineSchema } from './Pipelines';
 
 export interface PackageSchema extends Record<string, unknown> {
@@ -34,21 +34,18 @@ export class Packages<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
+    }: Either<{ projectId: string | number }, { groupId: string | number }> &
       Sudo &
       ShowExpanded<E> = {} as any,
   ): Promise<GitlabAPIResponse<PackageSchema[], C, E, void>> {
     let url: string;
 
-    if (projectId) {
-      url = endpoint`projects/${projectId}/packages`;
-    } else if (groupId) {
-      url = endpoint`groups/${groupId}/packages`;
-    } else {
-      throw new Error('projectId or groupId must be passed');
+    if (projectId) url = endpoint`projects/${projectId}/packages`;
+    else if (groupId) url = endpoint`groups/${groupId}/packages`;
+    else {
+      throw new Error(
+        'Missing required argument. Please supply a projectId or a groupId in the options parameter',
+      );
     }
 
     return RequestHelper.get<PackageSchema[]>()(this, url, options as Sudo & ShowExpanded<E>);

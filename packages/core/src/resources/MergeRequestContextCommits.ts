@@ -33,15 +33,10 @@ export class IssueLinks<C extends boolean = false> extends BaseResource<C> {
   create<E extends boolean = false>(
     projectId: string | number,
     commits: string[],
-    options?: { mergerequestIId?: number } & Sudo & ShowExpanded<E>,
+    { mergerequestIId, ...options }: { mergerequestIId?: number } & Sudo & ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
-    let url: string;
-
-    if (options?.mergerequestIId) {
-      url = endpoint`projects/${projectId}/merge_requests/${options.mergerequestIId}/context_commits`;
-    } else {
-      url = endpoint`projects/${projectId}/merge_requests`;
-    }
+    const prefix = endpoint`projects/${projectId}/merge_requests`;
+    const url = mergerequestIId ? `${prefix}/${mergerequestIId}/context_commits` : prefix;
 
     return RequestHelper.post<unknown>()(this, url, {
       commits,

@@ -2,6 +2,7 @@ import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type {
+  EitherOrNone,
   BaseRequestOptions,
   PaginatedRequestOptions,
   Sudo,
@@ -151,21 +152,14 @@ export class Issues<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId?: string | number; groupId?: never }
-      | { groupId?: string | number; projectId?: never }
-    ) &
+    }: EitherOrNone<{ projectId?: string | number }, { groupId?: string | number }> &
       PaginatedRequestOptions<E, P> = {} as any,
   ): Promise<GitlabAPIResponse<IssueSchema[], C, E, P>> {
     let url: string;
 
-    if (projectId) {
-      url = endpoint`projects/${projectId}/issues`;
-    } else if (groupId) {
-      url = endpoint`groups/${groupId}/issues`;
-    } else {
-      url = 'issues';
-    }
+    if (projectId) url = endpoint`projects/${projectId}/issues`;
+    else if (groupId) url = endpoint`groups/${groupId}/issues`;
+    else url = 'issues';
 
     return RequestHelper.get<IssueSchema[]>()(this, url, options as PaginatedRequestOptions<E, P>);
   }
@@ -361,13 +355,7 @@ export class Issues<C extends boolean = false> extends BaseResource<C> {
     issueId: number,
     { projectId, ...options }: { projectId?: string | number } & Sudo & ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<IssueSchema, C, E, void>> {
-    let url: string;
-
-    if (projectId) {
-      url = endpoint`projects/${projectId}/issues/${issueId}`;
-    } else {
-      url = `issues/${issueId}`;
-    }
+    const url = projectId ? endpoint`projects/${projectId}/issues/${issueId}` : `issues/${issueId}`;
 
     return RequestHelper.get<IssueSchema>()(this, url, options as Sudo & ShowExpanded<E>);
   }

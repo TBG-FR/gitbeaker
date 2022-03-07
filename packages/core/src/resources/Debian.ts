@@ -1,17 +1,18 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { Either, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
-function url({ projectId, groupId }) {
-  if (projectId) {
-    return endpoint`/projects/${projectId}/packages/debian`;
-  }
-  if (groupId) {
-    return endpoint`/groups/${groupId}/-/packages/debian`;
-  }
+function url({
+  projectId,
+  groupId,
+}: { projectId?: string | number; groupId?: string | number } = {}): string {
+  if (projectId) return endpoint`/projects/${projectId}/packages/debian`;
+  if (groupId) return endpoint`/groups/${groupId}/-/packages/debian`;
 
-  throw new Error('groupId or projectId must be given');
+  throw new Error(
+    'Missing required argument. Please supply a projectId or a groupId in the options parameter',
+  );
 }
 
 export class Debian<C extends boolean = false> extends BaseResource<C> {
@@ -23,20 +24,16 @@ export class Debian<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
-    const uri = url({
+    const prefix = url({
       projectId,
       groupId,
     });
 
     return RequestHelper.get<Blob>()(
       this,
-      `${uri}/dists/${distribution}/${component}/binary-${architecture}/Packages`,
+      `${prefix}/dists/${distribution}/${component}/binary-${architecture}/Packages`,
       options as ShowExpanded<E>,
     );
   }
@@ -47,20 +44,16 @@ export class Debian<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
-    const uri = url({
+    const prefix = url({
       projectId,
       groupId,
     });
 
     return RequestHelper.get<Blob>()(
       this,
-      `${uri}/dists/${distribution}/Release`,
+      `${prefix}/dists/${distribution}/Release`,
       options as ShowExpanded<E>,
     );
   }
@@ -71,20 +64,16 @@ export class Debian<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
-    const uri = url({
+    const prefix = url({
       projectId,
       groupId,
     });
 
     return RequestHelper.get<Blob>()(
       this,
-      `${uri}/dists/${distribution}/InRelease`,
+      `${prefix}/dists/${distribution}/InRelease`,
       options as ShowExpanded<E>,
     );
   }
@@ -95,20 +84,16 @@ export class Debian<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId: never }
-      | { groupId: string | number; projectId: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
-    const uri = url({
+    const prefix = url({
       projectId,
       groupId,
     });
 
     return RequestHelper.get<Blob>()(
       this,
-      `${uri}/dists/${distribution}/Release.gpg`,
+      `${prefix}/dists/${distribution}/Release.gpg`,
       options as ShowExpanded<E>,
     );
   }

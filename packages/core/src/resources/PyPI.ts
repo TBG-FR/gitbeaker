@@ -1,7 +1,7 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { Either, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export class PyPI<C extends boolean = false> extends BaseResource<C> {
   downloadPackageFile<E extends boolean = false>(
@@ -11,11 +11,7 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId?: never }
-      | { groupId: string | number; projectId?: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<Blob, void, E, void>> {
     let url = endpoint`packages/pypi/files/${sha}/${fileIdentifier}`;
 
@@ -24,7 +20,9 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
     } else if (groupId) {
       url = endpoint`groups/${groupId}/${url}`;
     } else {
-      throw new Error('Either a projectId or groupId must be passed in the options parameter');
+      throw new Error(
+        'Missing required argument. Please supply a projectId or a groupId in the options parameter',
+      );
     }
 
     return RequestHelper.get<Blob>()(this, url, options as ShowExpanded<E>);
@@ -36,11 +34,7 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: (
-      | { projectId: string | number; groupId?: never }
-      | { groupId: string | number; projectId?: never }
-    ) &
-      ShowExpanded<E>,
+    }: Either<{ projectId: string | number }, { groupId: string | number }> & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<string, C, E, void>> {
     let url = `packages/pypi/simple/${packageName}`;
 
@@ -49,7 +43,9 @@ export class PyPI<C extends boolean = false> extends BaseResource<C> {
     } else if (groupId) {
       url = endpoint`groups/${groupId}/${url}`;
     } else {
-      throw new Error('Either a projectId or groupId must be passed in the options parameter');
+      throw new Error(
+        'Missing required argument. Please supply a projectId or a groupId in the options parameter',
+      );
     }
 
     return RequestHelper.get<string>()(this, url, options as ShowExpanded<E>);
