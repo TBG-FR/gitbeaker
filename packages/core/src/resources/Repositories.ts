@@ -11,6 +11,10 @@ import type { CommitSchema, CondensedCommitSchema, CommitDiffSchema } from './Co
 
 type ArchiveType = 'tar.gz' | 'tar.bz2' | 'tbz' | 'tbz2' | 'tb2' | 'bz2' | 'tar' | 'zip';
 
+export interface RepositoryChangelogSchema extends Record<string, unknown> {
+  notes: string;
+}
+
 export interface RepositoryCompareSchema extends Record<string, unknown> {
   commit: Omit<CondensedCommitSchema, 'message'>;
   commits?: Omit<CondensedCommitSchema, 'message'>[];
@@ -68,8 +72,8 @@ export class Repositories<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     version: string,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
-    return RequestHelper.post<unknown>()(
+  ): Promise<GitlabAPIResponse<RepositoryChangelogSchema, C, E, void>> {
+    return RequestHelper.post<RepositoryChangelogSchema>()(
       this,
       endpoint`projects/${projectId}/repository/changelog`,
       { version, ...options },
@@ -133,8 +137,8 @@ export class Repositories<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     version: string,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
-    return RequestHelper.get<unknown>()(
+  ): Promise<GitlabAPIResponse<RepositoryChangelogSchema, C, E, void>> {
+    return RequestHelper.get<RepositoryChangelogSchema>()(
       this,
       endpoint`projects/${projectId}/repository/changelog`,
       { version, ...options },
