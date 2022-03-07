@@ -23,3 +23,4 @@ export { ResourceIterationEvents } from './ResourceIterationEvents';
 export { ResourceLabelEvents } from './ResourceLabelEvents';
 export { ResourceMilestoneEvents } from './ResourceMilestoneEvents';
 export { ResourceStateEvents } from './ResourceStateEvents';
+export { ResourceWeightEvents } from './ResourceWeightEvents';
