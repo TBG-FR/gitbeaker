@@ -113,8 +113,8 @@ export class RepositoryFiles<C extends boolean = false> extends BaseResource<C> 
     projectId: string | number,
     filePath: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
-    return RequestHelper.get<unknown>()(
+  ): Promise<GitlabAPIResponse<string, C, E, void>> {
+    return RequestHelper.get<string>()(
       this,
       endpoint`projects/${projectId}/repository/files/${filePath}/raw`,
       options,
