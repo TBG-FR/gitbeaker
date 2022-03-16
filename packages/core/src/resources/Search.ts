@@ -5,7 +5,7 @@ import type { ProjectSchema } from './Projects';
 import type { IssueSchema } from './Issues';
 import type { MergeRequestSchema } from './MergeRequests';
 import type { MilestoneSchema } from '../templates/ResourceMilestones';
-import type { SnippetSchema } from './Snippets';
+import type { SimpleSnippetSchema } from './Snippets';
 import type { CommitSchema } from './Commits';
 import type { NoteSchema } from '../templates/ResourceNotes';
 import type { UserSchema } from './Users';
@@ -74,7 +74,7 @@ export class Search<C extends boolean = false> extends BaseResource<C> {
     search: string,
     options?: EitherOrNone<{ projectId: string | number }, { groupId: string | number }> &
       BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<SnippetSchema[], C, E, void>>;
+  ): Promise<GitlabAPIResponse<SimpleSnippetSchema[], C, E, void>>;
 
   all<E extends boolean = false>(
     scope: 'milestones',

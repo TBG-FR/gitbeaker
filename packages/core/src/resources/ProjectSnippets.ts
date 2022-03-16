@@ -1,74 +1,52 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import {
-  BaseRequestOptions,
-  endpoint,
-  PaginatedRequestOptions,
-  RequestHelper,
-  Sudo,
-} from '../infrastructure';
-import { SnippetVisibility } from './Snippets';
-import { UserSchema } from './Users';
-
-export interface ProjectSnippetSchema extends Record<string, unknown> {
-  id: number;
-  title: string;
-  file_name: string;
-  description: string;
-  author: Pick<UserSchema, 'id' | 'username' | 'name' | 'state' | 'created_at'>;
-  updated_at: string;
-  created_at: string;
-  project_id: number;
-  web_url: string;
-  raw_url: string;
-}
+import { endpoint, RequestHelper } from '../infrastructure';
+import type { Sudo, ShowExpanded, BaseRequestOptions, GitlabAPIResponse } from '../infrastructure';
+import type { SnippetSchema, ExpandedSnippetSchema, UserAgentDetailSchema } from './Snippets';
 
 export class ProjectSnippets<C extends boolean = false> extends BaseResource<C> {
-  all(projectId: string | number, options?: PaginatedRequestOptions) {
-    return RequestHelper.get<ProjectSnippetSchema[]>()(
+  all<E extends boolean = false>(
+    projectId: string | number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<SnippetSchema[], C, E, void>> {
+    return RequestHelper.get<SnippetSchema[]>()(
       this,
       endpoint`projects/${projectId}/snippets`,
       options,
     );
   }
 
-  content(projectId: string | number, snippetId: number, options?: Sudo) {
-    return RequestHelper.get()(
-      this,
-      endpoint`projects/${projectId}/snippets/${snippetId}/raw`,
-      options,
-    );
-  }
-
-  create(
+  create<E extends boolean = false>(
     projectId: string | number,
     title: string,
-    fileName: string,
-    code: string,
-    visibility: SnippetVisibility,
-    options?: BaseRequestOptions,
+    options?: BaseRequestOptions<E>,
   ) {
-    return RequestHelper.post<ProjectSnippetSchema>()(
+    return RequestHelper.post<ExpandedSnippetSchema>()(
       this,
       endpoint`projects/${projectId}/snippets`,
       {
         title,
-        fileName,
-        code,
-        visibility,
         ...options,
       },
     );
   }
 
-  edit(projectId: string | number, snippetId: number, options?: BaseRequestOptions) {
-    return RequestHelper.put<ProjectSnippetSchema>()(
+  edit<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    options?: BaseRequestOptions<E>,
+  ) {
+    return RequestHelper.put<ExpandedSnippetSchema>()(
       this,
       endpoint`projects/${projectId}/snippets/${snippetId}`,
       options,
     );
   }
 
-  remove(projectId: string | number, snippetId: number, options?: Sudo) {
+  remove<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ) {
     return RequestHelper.del()(
       this,
       endpoint`projects/${projectId}/snippets/${snippetId}`,
@@ -76,19 +54,53 @@ export class ProjectSnippets<C extends boolean = false> extends BaseResource<C> 
     );
   }
 
-  show(projectId: string | number, snippetId: number, options?: Sudo) {
-    return RequestHelper.get<ProjectSnippetSchema>()(
+  show<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<SnippetSchema, C, E, void>> {
+    return RequestHelper.get<SnippetSchema>()(
       this,
       endpoint`projects/${projectId}/snippets/${snippetId}`,
       options,
     );
   }
 
-  userAgentDetails(projectId: string | number, snippetId: number, options?: Sudo) {
-    return RequestHelper.get<{
-      user_agent: string;
-      ip_address: string;
-      akismet_submitted: boolean;
-    }>()(this, endpoint`projects/${projectId}/snippets/${snippetId}/user_agent_detail`, options);
+  showContent<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<string, C, E, void>> {
+    return RequestHelper.get<string>()(
+      this,
+      endpoint`projects/${projectId}/snippets/${snippetId}/raw`,
+      options,
+    );
+  }
+
+  showRepositoryFileContent<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    ref: string,
+    filePath: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<string, C, E, void>> {
+    return RequestHelper.get<string>()(
+      this,
+      endpoint`projects/${projectId}/snippets/${snippetId}/files/${ref}/${filePath}/raw`,
+      options,
+    );
+  }
+
+  userAgentDetails<E extends boolean = false>(
+    projectId: string | number,
+    snippetId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ) {
+    return RequestHelper.get<UserAgentDetailSchema>()(
+      this,
+      endpoint`projects/${projectId}/snippets/${snippetId}/user_agent_detail`,
+      options,
+    );
   }
 }
