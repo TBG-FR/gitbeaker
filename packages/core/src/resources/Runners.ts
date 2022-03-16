@@ -88,10 +88,8 @@ export class Runners<C extends boolean = false> extends BaseResource<C> {
     runnerId: number,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<RunnerSchema, C, E, void>> {
-    const [pId, rId] = [projectId, runnerId].map(encodeURIComponent);
-
-    return RequestHelper.post<RunnerSchema>()(this, endpoint`projects/${pId}/runners`, {
-      runnerId: rId,
+    return RequestHelper.post<RunnerSchema>()(this, endpoint`projects/${projectId}/runners`, {
+      runnerId,
       ...options,
     });
   }
