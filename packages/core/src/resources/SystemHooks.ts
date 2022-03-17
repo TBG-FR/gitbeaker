@@ -1,15 +1,7 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import type { HookSchema } from '../templates/types';
 import { RequestHelper } from '../infrastructure';
-import type {
-  BaseRequestOptions,
-  PaginatedRequestOptions,
-  Sudo,
-  ShowExpanded,
-  GitlabAPIResponse,
-} from '../infrastructure';
-
-export interface SystemHookSchema extends HookSchema {}
+import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { HookSchema } from '../templates/types';
 
 export interface SystemHookTestResponse extends Record<string, unknown> {
   project_id: number;
@@ -21,20 +13,28 @@ export interface SystemHookTestResponse extends Record<string, unknown> {
 }
 
 export class SystemHooks<C extends boolean = false> extends BaseResource<C> {
+  // Convenience method
   add<E extends boolean = false>(
     url: string,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<SystemHookSchema, C, E, void>> {
-    return RequestHelper.post<SystemHookSchema>()(this, 'hooks', {
+  ): Promise<GitlabAPIResponse<HookSchema, C, E, void>> {
+    return this.create<E>(url, options);
+  }
+
+  all<E extends boolean = false>(
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<HookSchema[], C, E, void>> {
+    return RequestHelper.get<HookSchema[]>()(this, 'hooks', options);
+  }
+
+  create<E extends boolean = false>(
+    url: string,
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<HookSchema, C, E, void>> {
+    return RequestHelper.post<HookSchema>()(this, 'hooks', {
       url,
       ...options,
     });
-  }
-
-  all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
-    options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<SystemHookSchema[], C, E, P>> {
-    return RequestHelper.get<SystemHookSchema[]>()(this, 'hooks', options);
   }
 
   test<E extends boolean = false>(
@@ -49,5 +49,12 @@ export class SystemHooks<C extends boolean = false> extends BaseResource<C> {
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>> {
     return RequestHelper.del()(this, `hooks/${hookId}`, options);
+  }
+
+  show<E extends boolean = false>(
+    hookId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<HookSchema, C, E, void>> {
+    return RequestHelper.post<HookSchema>()(this, `hooks/${hookId}`, options);
   }
 }

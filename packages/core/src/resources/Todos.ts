@@ -1,42 +1,19 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import { UserSchema } from './Users';
-import { ProjectSchema } from './Projects';
-import { MilestoneSchema } from '../templates/types';
-import { RequestHelper, PaginatedRequestOptions, Sudo, endpoint } from '../infrastructure';
+import { RequestHelper } from '../infrastructure';
+import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { UserSchema } from './Users';
+import type { SimpleProjectSchema } from './Projects';
 
 export interface TodoSchema extends Record<string, unknown> {
   id: number;
+  author: Omit<UserSchema, 'created_at'>;
   project: Pick<
-    ProjectSchema,
+    SimpleProjectSchema,
     'id' | 'name' | 'name_with_namespace' | 'path' | 'path_with_namespace'
   >;
-  author: Pick<UserSchema, 'name' | 'username' | 'id' | 'state' | 'avatar_url' | 'web_url'>;
   action_name: string;
   target_type: string;
-  target: {
-    id: number;
-    iid: number;
-    project_id: number;
-    title: string;
-    description: string;
-    state: string;
-    created_at: string;
-    updated_at: string;
-    target_branch: string;
-    source_branch: string;
-    upvotes: number;
-    downvotes: number;
-    author: Pick<UserSchema, 'name' | 'username' | 'id' | 'state' | 'avatar_url' | 'web_url'>;
-    assignee: Pick<UserSchema, 'name' | 'username' | 'id' | 'state' | 'avatar_url' | 'web_url'>;
-    source_project_id: number;
-    target_project_id: number;
-    labels?: string[];
-    work_in_progress: boolean;
-    milestone: Omit<MilestoneSchema, 'start_date' | 'expired' | 'web_url'>;
-    merge_when_pipeline_succeeds: boolean;
-    merge_status: string;
-    user_notes_count: number;
-  };
+  target: Record<string, unknown>;
   target_url: string;
   body: string;
   state: string;
@@ -45,41 +22,32 @@ export interface TodoSchema extends Record<string, unknown> {
 }
 
 export class Todos<C extends boolean = false> extends BaseResource<C> {
-  all(options?: PaginatedRequestOptions) {
+  all<E extends boolean = false>(options?: BaseRequestOptions<E>) {
     return RequestHelper.get<TodoSchema[]>()(this, 'todos', options);
   }
 
-  create(
-    projectId: string | number,
-    resourceId: number,
-    resourceName: 'mergerequest' | 'issue',
-    options?: Sudo,
-  ) {
-    const resourceAPI = resourceName === 'issue' ? 'issues' : 'merge_requests';
+  done<E extends boolean = false>(
+    options: { todoId: number } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<TodoSchema, C, E, void>>;
 
-    return RequestHelper.post<TodoSchema>()(
+  done<E extends boolean = false>(
+    options: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>>;
+
+  done<E extends boolean = false>({
+    todoId,
+    ...options
+  }: { todoId?: number } & Sudo & ShowExpanded<E> = {}): Promise<
+    GitlabAPIResponse<void | TodoSchema, C, E, void>
+  > {
+    let prefix = 'todos';
+
+    if (todoId) prefix += `/${todoId}`;
+
+    return RequestHelper.post<void | TodoSchema>()(
       this,
-      endpoint`projects/${projectId}/${resourceAPI}/${resourceId}/todo`,
-      options,
+      `${prefix}/mark_as_done`,
+      options as Sudo & ShowExpanded<E>,
     );
-  }
-
-  done({ todoId, ...options }: { todoId?: number } & Sudo = {}) {
-    const url = ['todos'];
-
-    if (todoId) url.push(todoId.toString());
-
-    url.push('mark_as_done');
-
-    // Fixme: Rewrite this to make better use of proper typing
-    if (todoId) {
-      return RequestHelper.post<TodoSchema>()(
-        this,
-        url.join('/'),
-        options as Record<string, unknown>,
-      );
-    }
-
-    return RequestHelper.post<void>()(this, url.join('/'), options as Record<string, unknown>);
   }
 }

@@ -1,6 +1,6 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, BaseRequestOptions, GitlabAPIResponse } from '../infrastructure';
+import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 import type { UserSchema } from './Users';
 
 export type SnippetVisibility = 'private' | 'public' | 'internal';

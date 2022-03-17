@@ -1,13 +1,8 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import { CommitSchema } from './Commits';
-import { ReleaseSchema } from './Releases';
-import {
-  BaseRequestOptions,
-  endpoint,
-  PaginatedRequestOptions,
-  RequestHelper,
-  Sudo,
-} from '../infrastructure';
+import { endpoint, RequestHelper } from '../infrastructure';
+import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type { CommitSchema } from './Commits';
+import type { ReleaseSchema } from './Releases';
 
 export interface TagSchema extends Record<string, unknown> {
   commit: CommitSchema;
@@ -19,7 +14,11 @@ export interface TagSchema extends Record<string, unknown> {
 }
 
 export class Tags<C extends boolean = false> extends BaseResource<C> {
-  all(projectId: string | number, options?: PaginatedRequestOptions) {
+  all<E extends boolean = false>(
+    projectId: string | number,
+    options?: { orderBy?: 'name' | 'updated'; sort?: 'asc' | 'desc'; search?: string } & Sudo &
+      ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<TagSchema[], C, E, void>> {
     return RequestHelper.get<TagSchema[]>()(
       this,
       endpoint`projects/${projectId}/repository/tags`,
@@ -27,7 +26,12 @@ export class Tags<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  create(projectId: string | number, tagName: string, ref: string, options?: BaseRequestOptions) {
+  create<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    ref: string,
+    options?: { message?: string } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<TagSchema, C, E, void>> {
     return RequestHelper.post<TagSchema>()(this, endpoint`projects/${projectId}/repository/tags`, {
       query: {
         tagName,
@@ -37,7 +41,11 @@ export class Tags<C extends boolean = false> extends BaseResource<C> {
     });
   }
 
-  remove(projectId: string | number, tagName: string, options?: Sudo) {
+  remove<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>> {
     return RequestHelper.del()(
       this,
       endpoint`projects/${projectId}/repository/tags/${tagName}`,
@@ -45,7 +53,11 @@ export class Tags<C extends boolean = false> extends BaseResource<C> {
     );
   }
 
-  show(projectId: string | number, tagName: string, options?: Sudo) {
+  show<E extends boolean = false>(
+    projectId: string | number,
+    tagName: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<TagSchema, C, E, void>> {
     return RequestHelper.get<TagSchema>()(
       this,
       endpoint`projects/${projectId}/repository/tags/${tagName}`,
