@@ -22,7 +22,9 @@ export interface TodoSchema extends Record<string, unknown> {
 }
 
 export class Todos<C extends boolean = false> extends BaseResource<C> {
-  all<E extends boolean = false>(options?: BaseRequestOptions<E>) {
+  all<E extends boolean = false>(
+    options?: BaseRequestOptions<E>,
+  ): Promise<GitlabAPIResponse<TodoSchema[], C, E, void>> {
     return RequestHelper.get<TodoSchema[]>()(this, 'todos', options);
   }
 
