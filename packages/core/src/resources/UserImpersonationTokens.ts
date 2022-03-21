@@ -1,5 +1,11 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
-import { RequestHelper, PaginatedRequestOptions, Sudo } from '../infrastructure';
+import { RequestHelper } from '../infrastructure';
+import type {
+  PaginatedRequestOptions,
+  Sudo,
+  ShowExpanded,
+  GitlabAPIResponse,
+} from '../infrastructure';
 
 export type ImpersonationTokenScope = 'api' | 'read_user';
 export type ImpersonationTokenState = 'all' | 'active' | 'inactive';
@@ -17,7 +23,10 @@ export interface UserImpersonationTokenSchema extends Record<string, unknown> {
 }
 
 export class UserImpersonationTokens<C extends boolean = false> extends BaseResource<C> {
-  all(userId: number, options?: { state?: ImpersonationTokenState } & PaginatedRequestOptions) {
+  all<E extends boolean = false>(
+    userId: number,
+    options?: { state?: ImpersonationTokenState } & PaginatedRequestOptions<E, 'offset'>,
+  ): Promise<GitlabAPIResponse<UserImpersonationTokenSchema[], C, E, 'offset'>> {
     return RequestHelper.get<UserImpersonationTokenSchema[]>()(
       this,
       `users/${userId}/impersonation_tokens`,
@@ -25,27 +34,28 @@ export class UserImpersonationTokens<C extends boolean = false> extends BaseReso
     );
   }
 
-  // TODO: change required params
-  add(
+  create<E extends boolean = false>(
     userId: number,
     name: string,
     scopes: ImpersonationTokenScope,
-    expiresAt: string,
-    options?: Sudo,
-  ) {
+    options?: { expiresAt?: string } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<UserImpersonationTokenSchema, C, E, void>> {
     return RequestHelper.post<UserImpersonationTokenSchema>()(
       this,
       `users/${userId}/impersonation_tokens`,
       {
         name,
-        expiresAt,
         scopes,
         ...options,
       },
     );
   }
 
-  show(userId: number, tokenId: number, options?: Sudo) {
+  show<E extends boolean = false>(
+    userId: number,
+    tokenId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<UserImpersonationTokenSchema, C, E, void>> {
     return RequestHelper.get<UserImpersonationTokenSchema>()(
       this,
       `users/${userId}/impersonation_tokens/${tokenId}`,
@@ -53,7 +63,19 @@ export class UserImpersonationTokens<C extends boolean = false> extends BaseReso
     );
   }
 
-  revoke(userId: number, tokenId: number, options?: Sudo) {
+  remove<E extends boolean = false>(
+    userId: number,
+    tokenId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ) {
     return RequestHelper.del()(this, `users/${userId}/impersonation_tokens/${tokenId}`, options);
+  }
+
+  revoke<E extends boolean = false>(
+    userId: number,
+    tokenId: number,
+    options?: Sudo & ShowExpanded<E>,
+  ) {
+    return this.remove(userId, tokenId, options);
   }
 }
