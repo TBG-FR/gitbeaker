@@ -10,32 +10,28 @@ import type {
 } from '../infrastructure';
 import type { UserSchema } from '../resources/Users';
 
-export interface DiscussionNotePositionBaseOptions {
-  base_sha: string;
-  start_sha: string;
-  head_sha: string;
-  old_line?: number;
-  new_line?: number;
-  width?: number;
-  height?: number;
-  x?: number;
-  y?: number;
-}
-
-export interface DiscussionNotePositionSchema extends Record<string, unknown> {
+export interface DiscussionNotePositionBaseSchema extends Record<string, unknown> {
   base_sha: string;
   start_sha: string;
   head_sha: string;
   position_type: 'text' | 'image';
   old_path?: string;
   new_path?: string;
-  old_line?: number;
-  new_line?: number;
-  width?: number;
-  height?: number;
-  x?: number;
-  y?: number;
 }
+
+export type DiscussionNotePositionSchema =
+  | (DiscussionNotePositionBaseSchema & {
+      position_type: 'text';
+      new_line?: string;
+      old_line?: string;
+    })
+  | (DiscussionNotePositionBaseSchema & {
+      position_type: 'image';
+      width?: string;
+      height?: string;
+      x?: number;
+      y?: number;
+    });
 
 export interface DiscussionNoteSchema extends Record<string, unknown> {
   id: number;

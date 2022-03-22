@@ -6,7 +6,6 @@ export type {
   DiscussionSchema,
   DiscussionNoteSchema,
   DiscussionNotePositionSchema,
-  DiscussionNotePositionBaseOptions,
 } from './ResourceDiscussions';
 export type { IssueBoardListSchema, IssueBoardSchema } from './ResourceIssueBoards';
 export type { LabelSchema } from './ResourceLabels';
@@ -19,7 +18,7 @@ export type {
 export type { MilestoneSchema } from './ResourceMilestones';
 export type { NoteSchema } from './ResourceNotes';
 export type { TemplateSchema } from './ResourceTemplates';
-export type { VariableSchema } from './ResourceVariables';
+export type { VariableSchema, VariableFilter, VariableType } from './ResourceVariables';
 export type { WikiSchema } from './ResourceWikis';
 export type { HookSchema, ExpandedHookSchema } from './ResourceHooks';
 export type { PushRulesSchema } from './ResourcePushRules';

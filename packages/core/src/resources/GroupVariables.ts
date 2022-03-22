@@ -1,32 +1,51 @@
-import { BaseResourceOptions } from '@gitbeaker/requester-utils';
+import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { ResourceVariables } from '../templates';
-import { VariableSchema } from '../templates/types';
-import { PaginatedRequestOptions, BaseRequestOptions, CamelizedResponse } from '../infrastructure';
+import type { VariableSchema, VariableType } from '../templates/types';
+import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export interface GroupVariables<C extends boolean = false> extends ResourceVariables<C> {
-  all(
-    groupId: string | number,
-    options?: PaginatedRequestOptions,
-  ): Promise<CamelizedResponse<C, VariableSchema>[]>;
+  all<E extends boolean = false>(
+    projectId: string | number,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<VariableSchema[], C, E, void>>;
 
-  create(
-    groupId: string | number,
-    options?: BaseRequestOptions,
-  ): Promise<CamelizedResponse<C, VariableSchema>>;
-
-  edit(
-    groupId: string | number,
+  create<E extends boolean = false>(
+    projectId: string | number,
     key: string,
-    options?: BaseRequestOptions,
-  ): Promise<CamelizedResponse<C, VariableSchema>>;
+    value: string,
+    options?: {
+      variableType?: VariableType;
+      protected?: boolean;
+      masked?: boolean;
+      environmentScope?: string;
+    } & Sudo &
+      ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>>;
 
-  show(
-    groupId: string | number,
+  edit<E extends boolean = false>(
+    projectId: string | number,
     key: string,
-    options?: PaginatedRequestOptions,
-  ): Promise<CamelizedResponse<C, VariableSchema>>;
+    value: string,
+    options?: {
+      variableType?: VariableType;
+      protected?: boolean;
+      masked?: boolean;
+      environmentScope?: string;
+    } & Sudo &
+      ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>>;
 
-  remove(groupId: string | number, key: string, options?: PaginatedRequestOptions): Promise<void>;
+  show<E extends boolean = false>(
+    projectId: string | number,
+    key: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>>;
+
+  remove<E extends boolean = false>(
+    projectId: string | number,
+    key: string,
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<void, C, E, void>>;
 }
 
 export class GroupVariables<C extends boolean = false> extends ResourceVariables<C> {

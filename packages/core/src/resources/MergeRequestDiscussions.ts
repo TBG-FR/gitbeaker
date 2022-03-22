@@ -4,7 +4,6 @@ import type {
   DiscussionSchema,
   DiscussionNoteSchema,
   DiscussionNotePositionSchema,
-  DiscussionNotePositionBaseOptions,
 } from '../templates/types';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type {
@@ -21,18 +20,7 @@ export interface MergeRequestDiscussionNoteSchema extends DiscussionNoteSchema {
   position?: DiscussionNotePositionSchema;
 }
 
-export type DiscussionNotePositionOptions = (
-  | (DiscussionNotePositionBaseOptions & {
-      position_type: 'text';
-      new_path: string;
-      old_path: string;
-    })
-  | (DiscussionNotePositionBaseOptions & {
-      position_type: 'image';
-      new_path?: string;
-      old_path?: string;
-    })
-) & {
+export type DiscussionNotePositionOptions = DiscussionNotePositionSchema & {
   line_range?: {
     start?: {
       line_code: string;

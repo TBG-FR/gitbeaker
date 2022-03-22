@@ -73,7 +73,10 @@ export class Runners<C extends boolean = false> extends BaseResource<C> {
     token: string,
     options?: BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<RunnerToken, C, E, void>> {
-    return this.register<E>(token, options);
+    return RequestHelper.post<RunnerToken>()(this, `runners`, {
+      token,
+      ...options,
+    });
   }
 
   edit<E extends boolean = false>(
@@ -109,14 +112,12 @@ export class Runners<C extends boolean = false> extends BaseResource<C> {
     return RequestHelper.get<JobSchema[]>()(this, `runners/${runnerId}/jobs`, options);
   }
 
+  // Convenience method
   register<E extends boolean = false>(
     token: string,
     options?: BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<RunnerToken, C, E, void>> {
-    return RequestHelper.post<RunnerToken>()(this, `runners`, {
-      token,
-      ...options,
-    });
+    return this.create<E>(token, options);
   }
 
   remove<E extends boolean = false>({

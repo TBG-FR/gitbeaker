@@ -1,74 +1,85 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type {
-  BaseRequestOptions,
-  PaginatedRequestOptions,
-  Sudo,
-  ShowExpanded,
-  GitlabAPIResponse,
-  Camelize,
-} from '../infrastructure';
+import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
+export type VariableType = 'env_var' | 'file';
 export interface VariableSchema extends Record<string, unknown> {
-  variable_type: 'env_var' | 'file';
+  variable_type: VariableType;
   value: string;
   protected: boolean;
   masked: boolean;
-  environment_scope?: string; // Environment scope is only available for projects.
   key: string;
 }
-
-export type VariabeRequestOptions = Camelize<VariableSchema>;
+export type VariableFilter = Record<'environment_scope', number | string>;
 
 export class ResourceVariables<C extends boolean> extends BaseResource<C> {
   constructor(resourceType: string, options: BaseResourceOptions<C>) {
     super({ prefixUrl: resourceType, ...options });
   }
 
-  all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
+  all<E extends boolean = false>(
     resourceId: string | number,
-    options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<VariableSchema[], C, E, P>> {
+    options?: Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<VariableSchema[], C, E, void>> {
     return RequestHelper.get<VariableSchema[]>()(this, endpoint`${resourceId}/variables`, options);
   }
 
   create<E extends boolean = false>(
     resourceId: string | number,
-    options?: VariabeRequestOptions & Sudo & ShowExpanded<E>,
+    key: string,
+    value: string,
+    options?: {
+      variableType?: VariableType;
+      protected?: boolean;
+      masked?: boolean;
+      environmentScope?: string;
+    } & Sudo &
+      ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>> {
-    return RequestHelper.post<VariableSchema>()(this, endpoint`${resourceId}/variables`, options);
+    return RequestHelper.post<VariableSchema>()(this, endpoint`${resourceId}/variables`, {
+      key,
+      value,
+      ...options,
+    });
   }
 
   edit<E extends boolean = false>(
     resourceId: string | number,
-    keyId: string,
-    options?: Omit<VariabeRequestOptions, 'key'> & Sudo & ShowExpanded<E>,
+    key: string,
+    value: string,
+    options?: {
+      variableType?: VariableType;
+      protected?: boolean;
+      masked?: boolean;
+      environmentScope?: string;
+      filter: VariableFilter;
+    } & Sudo &
+      ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>> {
-    return RequestHelper.put<VariableSchema>()(
-      this,
-      endpoint`${resourceId}/variables/${keyId}`,
-      options,
-    );
+    return RequestHelper.put<VariableSchema>()(this, endpoint`${resourceId}/variables/${key}`, {
+      value,
+      ...options,
+    });
   }
 
   show<E extends boolean = false>(
     resourceId: string | number,
-    keyId: string,
-    options?: BaseRequestOptions<E>,
+    key: string,
+    options?: { filter?: VariableFilter } & Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<VariableSchema, C, E, void>> {
     return RequestHelper.get<VariableSchema>()(
       this,
-      endpoint`${resourceId}/variables/${keyId}`,
+      endpoint`${resourceId}/variables/${key}`,
       options,
     );
   }
 
   remove<E extends boolean = false>(
     resourceId: string | number,
-    keyId: string,
-    options?: BaseRequestOptions<E>,
+    key: string,
+    options?: { filter?: VariableFilter } & Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>> {
-    return RequestHelper.del()(this, endpoint`${resourceId}/variables/${keyId}`, options);
+    return RequestHelper.del()(this, endpoint`${resourceId}/variables/${key}`, options);
   }
 }
