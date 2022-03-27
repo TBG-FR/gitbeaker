@@ -22,7 +22,7 @@ export class ResourceDORA4Metrics<C extends boolean = false> extends BaseResourc
       startDate?: string;
       endDate?: string;
       interval?: string;
-      enviromentTier?: string;
+      environmentTier?: string;
     } & BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<DORA4MetricSchema[], C, E, void>> {
     return RequestHelper.get<DORA4MetricSchema[]>()(this, endpoint`${resourceId}/dora/metrics`, {

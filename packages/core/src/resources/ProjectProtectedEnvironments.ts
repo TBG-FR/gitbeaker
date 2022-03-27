@@ -1,26 +1,26 @@
 import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { ResourceProtectedEnvironments } from '../templates';
-import { ProtectedEnviromentSchema, ProtectedEnvironmentAccessLevel } from '../templates/types';
+import { ProtectedEnvironmentSchema, ProtectedEnvironmentAccessLevel } from '../templates/types';
 import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
 export interface ProjectProtectedEnvironments<C extends boolean = false> {
   all<E extends boolean = false>(
     projectId: string | number,
     options: { search?: string } & Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema[], C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema[], C, E, void>>;
 
   protect<E extends boolean = false>(
     projectId: string | number,
     name: string,
     deployAccessLevel: ProtectedEnvironmentAccessLevel[],
     options?: { requiredApprovalCount?: number } & Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema, C, E, void>>;
 
   show<E extends boolean = false>(
     projectId: string | number,
     name: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema, C, E, void>>;
 
   unprotect<E extends boolean = false>(
     projectId: string | number,

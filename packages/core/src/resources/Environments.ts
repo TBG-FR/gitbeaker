@@ -21,16 +21,16 @@ export interface EnvironmentSchema extends Record<string, unknown> {
   deployable: DeployableSchema;
 }
 
-export type CondensedEnviromentSchema = Omit<EnvironmentSchema, 'last_deployment' | 'deployable'>;
+export type CondensedEnvironmentSchema = Omit<EnvironmentSchema, 'last_deployment' | 'deployable'>;
 
-export type ReviewAppSchema = Omit<CondensedEnviromentSchema, 'state'>;
+export type ReviewAppSchema = Omit<CondensedEnvironmentSchema, 'state'>;
 
 export class Environments<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     projectId: string | number,
     options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<CondensedEnviromentSchema[], C, E, P>> {
-    return RequestHelper.get<CondensedEnviromentSchema[]>()(
+  ): Promise<GitlabAPIResponse<CondensedEnvironmentSchema[], C, E, P>> {
+    return RequestHelper.get<CondensedEnvironmentSchema[]>()(
       this,
       endpoint`projects/${projectId}/environments`,
       options,
@@ -41,8 +41,8 @@ export class Environments<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     name: string,
     options?: { externalUrl?: string } & BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<CondensedEnviromentSchema, C, E, void>> {
-    return RequestHelper.post<CondensedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<CondensedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.post<CondensedEnvironmentSchema>()(
       this,
       endpoint`projects/${projectId}/environments`,
       {
@@ -56,8 +56,8 @@ export class Environments<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     environmentId: number,
     options?: { externalUrl?: string } & BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<CondensedEnviromentSchema, C, E, void>> {
-    return RequestHelper.put<CondensedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<CondensedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.put<CondensedEnvironmentSchema>()(
       this,
       endpoint`projects/${projectId}/environments/${environmentId}`,
       options,
@@ -97,8 +97,8 @@ export class Environments<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     environmentId: number,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<CondensedEnviromentSchema, C, E, void>> {
-    return RequestHelper.get<CondensedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<CondensedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.get<CondensedEnvironmentSchema>()(
       this,
       endpoint`projects/${projectId}/environments/${environmentId}`,
       options,
@@ -109,8 +109,8 @@ export class Environments<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     environmentId: number,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<CondensedEnviromentSchema, C, E, void>> {
-    return RequestHelper.post<CondensedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<CondensedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.post<CondensedEnvironmentSchema>()(
       this,
       endpoint`projects/${projectId}/environments/${environmentId}/stop`,
       options,

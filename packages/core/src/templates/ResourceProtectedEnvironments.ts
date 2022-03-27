@@ -10,7 +10,7 @@ export interface ProtectedEnvironmentAccessLevel {
   group_id?: number;
 }
 
-export interface ProtectedEnviromentSchema extends Record<string, unknown> {
+export interface ProtectedEnvironmentSchema extends Record<string, unknown> {
   name: string;
   deploy_access_levels?: ProtectedEnvironmentAccessLevel[];
   required_approval_count: number;
@@ -24,8 +24,8 @@ export class ResourceProtectedEnvironments<C extends boolean = false> extends Ba
   all<E extends boolean = false>(
     resourceId: string | number,
     options: { search?: string } & Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema[], C, E, void>> {
-    return RequestHelper.get<ProtectedEnviromentSchema[]>()(
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema[], C, E, void>> {
+    return RequestHelper.get<ProtectedEnvironmentSchema[]>()(
       this,
       `${resourceId}/protected_environments`,
       options,
@@ -37,8 +37,8 @@ export class ResourceProtectedEnvironments<C extends boolean = false> extends Ba
     name: string,
     deployAccessLevel: ProtectedEnvironmentAccessLevel[],
     options?: { requiredApprovalCount?: number } & Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema, C, E, void>> {
-    return RequestHelper.post<ProtectedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.post<ProtectedEnvironmentSchema>()(
       this,
       `${resourceId}/protected_environments`,
       {
@@ -53,8 +53,8 @@ export class ResourceProtectedEnvironments<C extends boolean = false> extends Ba
     resourceId: string | number,
     name: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ProtectedEnviromentSchema, C, E, void>> {
-    return RequestHelper.get<ProtectedEnviromentSchema>()(
+  ): Promise<GitlabAPIResponse<ProtectedEnvironmentSchema, C, E, void>> {
+    return RequestHelper.get<ProtectedEnvironmentSchema>()(
       this,
       `${resourceId}/protected_environments/${name}`,
       options,

@@ -27,7 +27,7 @@ export type { InvitationSchema } from './ResourceInvitations';
 export type { IterationSchema } from './ResourceIterations';
 export type {
   ProtectedEnvironmentAccessLevel,
-  ProtectedEnviromentSchema,
+  ProtectedEnvironmentSchema,
 } from './ResourceProtectedEnvironments';
 export type { IterationEventSchema } from './ResourceIterationEvents';
 export type { LabelEventSchema } from './ResourceLabelEvents';
