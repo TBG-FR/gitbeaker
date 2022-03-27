@@ -1,3 +1,4 @@
+import { decamelizeKeys } from 'xcase';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
@@ -94,15 +95,31 @@ export class ResourceDiscussions<C extends boolean = false> extends BaseResource
     resourceId: string | number,
     resource2Id: string | number,
     body: string,
-    options?: BaseRequestOptions<E>,
+    {
+      position,
+      ...options
+    }: { position?: DiscussionNotePositionSchema; commitId?: string; createdAt?: string } & Sudo &
+      ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>> {
+    const opts: Record<string, unknown> = { ...options };
+
+    if (position) {
+      const p = decamelizeKeys(position);
+
+      opts.isForm = true;
+      opts.body = body;
+
+      Object.entries(p).forEach(([k, v]) => {
+        opts[`position[${k}]`] = v;
+      });
+    } else {
+      opts.query = { body };
+    }
+
     return RequestHelper.post<DiscussionSchema>()(
       this,
       endpoint`${resourceId}/${this.resource2Type}/${resource2Id}/discussions`,
-      {
-        query: { body },
-        ...options,
-      },
+      opts,
     );
   }
 
@@ -111,7 +128,7 @@ export class ResourceDiscussions<C extends boolean = false> extends BaseResource
     resource2Id: string | number,
     discussionId: string | number,
     noteId: number,
-    { body, ...options }: BaseRequestOptions<E> & { body?: string } = {},
+    { body, ...options }: Sudo & ShowExpanded<E> & { body?: string; resolved?: boolean } = {},
   ): Promise<GitlabAPIResponse<DiscussionNoteSchema, C, E, void>> {
     return RequestHelper.put<DiscussionNoteSchema>()(
       this,

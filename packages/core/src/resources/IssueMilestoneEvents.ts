@@ -3,7 +3,7 @@ import { ResourceMilestoneEvents } from '../templates';
 import type { MilestoneEventSchema } from '../templates/types';
 import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
-export interface IssueMilestonEvents<C extends boolean = false> {
+export interface IssueMilestoneEvents<C extends boolean = false> {
   all<E extends boolean = false>(
     projectId: string | number,
     issueIId: number,

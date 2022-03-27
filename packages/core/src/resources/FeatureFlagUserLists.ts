@@ -18,7 +18,7 @@ export interface FeatureFlagUserListSchema extends Record<string, unknown> {
   updated_at: string;
 }
 
-export class FeatureFlags<C extends boolean = false> extends BaseResource<C> {
+export class FeatureFlagUserLists<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     projectId: string | number,
     options: { scopes?: 'enabled' | 'disabled' } & PaginatedRequestOptions<E, P> = {} as any,

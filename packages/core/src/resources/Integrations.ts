@@ -57,7 +57,7 @@ export interface IntegrationSchema extends Record<string, unknown> {
   comment_on_event_enabled: boolean;
 }
 
-export class Services<C extends boolean = false> extends BaseResource<C> {
+export class Integrations<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     projectId: string | number,
     options?: Sudo & ShowExpanded<E>,

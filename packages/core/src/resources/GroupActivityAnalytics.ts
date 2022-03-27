@@ -14,7 +14,7 @@ export interface GroupAnalyticsNewMembersCountSchema extends Record<string, unkn
   new_members_count: number;
 }
 
-export class GeoNodes<C extends boolean = false> extends BaseResource<C> {
+export class GroupActivityAnalytics<C extends boolean = false> extends BaseResource<C> {
   issuesCount<E extends boolean = false>(
     groupPath: string,
     options?: Sudo & ShowExpanded<E>,

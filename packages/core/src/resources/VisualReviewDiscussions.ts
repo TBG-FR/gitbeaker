@@ -6,13 +6,13 @@ import type { DiscussionSchema, DiscussionNotePositionSchema } from '../template
 export class VisualReviewDiscussions<C extends boolean = false> extends BaseResource<C> {
   create<E extends boolean = false>(
     projectId: string | number,
-    mergeRequestIId: number,
+    mergerequestIId: number,
     body: string,
     options?: { position?: DiscussionNotePositionSchema } & Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>> {
     return RequestHelper.get<DiscussionSchema>()(
       this,
-      endpoint`projects/${projectId}/merge_requests/${mergeRequestIId}/visual_review_discussions`,
+      endpoint`projects/${projectId}/merge_requests/${mergerequestIId}/visual_review_discussions`,
       {
         body,
         ...options,

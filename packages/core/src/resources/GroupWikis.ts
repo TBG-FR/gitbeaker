@@ -1,30 +1,32 @@
 import type { BaseResourceOptions } from '@gitbeaker/requester-utils';
 import { ResourceWikis } from '../templates';
-import type { WikiSchema } from '../templates/types';
+import type { WikiSchema, WikiAttachmentSchema } from '../templates/types';
 import type {
-  BaseRequestOptions,
-  PaginatedRequestOptions,
+  Either,
   Sudo,
   ShowExpanded,
   GitlabAPIResponse,
+  UploadMetadataOptions,
 } from '../infrastructure';
 
 export interface GroupWikis<C extends boolean = false> extends ResourceWikis<C> {
-  all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
+  all<E extends boolean = false>(
     groupId: string | number,
-    options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<WikiSchema[], C, E, P>>;
+    options?: { withContent?: string } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<WikiSchema[], C, E, void>>;
 
-  // TODO: The create method in the docs only operates on the projects api, is this an error?
   create<E extends boolean = false>(
     groupId: string | number,
-    options?: BaseRequestOptions<E>,
+    content: string,
+    title: string,
+    options?: { format?: string } & Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<WikiSchema, C, E, void>>;
 
   edit<E extends boolean = false>(
     groupId: string | number,
     slug: string,
-    options?: BaseRequestOptions<E>,
+    options?: Either<{ content: string }, { title: string }> & { format?: string } & Sudo &
+      ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<WikiSchema, C, E, void>>;
 
   remove<E extends boolean = false>(
@@ -36,8 +38,14 @@ export interface GroupWikis<C extends boolean = false> extends ResourceWikis<C> 
   show<E extends boolean = false>(
     groupId: string | number,
     slug: string,
-    options?: Sudo & ShowExpanded<E>,
+    options?: { renderHtml?: boolean; version?: string } & Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<WikiSchema, C, E, void>>;
+
+  uploadAttachment<E extends boolean = false>(
+    groupId: string | number,
+    content: string,
+    options?: { metadata?: UploadMetadataOptions; branch?: string } & Sudo & ShowExpanded<E>,
+  ): Promise<GitlabAPIResponse<WikiAttachmentSchema, C, E, void>>;
 }
 
 export class GroupWikis<C extends boolean = false> extends ResourceWikis<C> {

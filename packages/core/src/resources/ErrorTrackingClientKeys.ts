@@ -14,7 +14,7 @@ export interface ErrorTrackingClientKeySchema extends Record<string, unknown> {
   sentry_dsn: string;
 }
 
-export class ApplicationSettings<C extends boolean = false> extends BaseResource<C> {
+export class ErrorTrackingClientKeys<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     projectId: string | number,
     options?: PaginatedRequestOptions<E, P>,

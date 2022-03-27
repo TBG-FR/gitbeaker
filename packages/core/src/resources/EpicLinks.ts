@@ -37,7 +37,7 @@ export interface EpicLinkSchema extends Record<string, unknown> {
   labels?: string[];
 }
 
-export class IssueLinks<C extends boolean = false> extends BaseResource<C> {
+export class EpicLinks<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     groupId: string | number,
     epicIId: number,

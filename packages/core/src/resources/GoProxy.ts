@@ -7,7 +7,7 @@ export interface GoProxyModuleVersionSchema extends Record<string, unknown> {
   Time: string;
 }
 
-export class GeoNodes<C extends boolean = false> extends BaseResource<C> {
+export class GoProxy<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     projectId: string | number,
     moduleName: string,

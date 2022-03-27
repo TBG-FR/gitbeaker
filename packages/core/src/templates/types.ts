@@ -19,7 +19,7 @@ export type { MilestoneSchema } from './ResourceMilestones';
 export type { NoteSchema } from './ResourceNotes';
 export type { TemplateSchema } from './ResourceTemplates';
 export type { VariableSchema, VariableFilter, VariableType } from './ResourceVariables';
-export type { WikiSchema } from './ResourceWikis';
+export type { WikiSchema, WikiAttachmentSchema } from './ResourceWikis';
 export type { HookSchema, ExpandedHookSchema } from './ResourceHooks';
 export type { PushRulesSchema } from './ResourcePushRules';
 export type { RepositoryStorageMoveSchema } from './ResourceRepositoryStorageMoves';

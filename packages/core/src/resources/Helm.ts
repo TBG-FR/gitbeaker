@@ -1,8 +1,7 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
-import type { UploadMetadata } from './types';
+import type { Sudo, ShowExpanded, GitlabAPIResponse, UploadMetadataOptions } from '../infrastructure';
 
 export const defaultMetadata = {
   filename: `${Date.now().toString()}.tgz`,
@@ -42,7 +41,7 @@ export class Helm<C extends boolean = false> extends BaseResource<C> {
       metadata,
       parentId,
       ...options
-    }: { parentId?: number; metadata?: UploadMetadata } & Sudo & ShowExpanded<E> = {},
+    }: { parentId?: number; metadata?: UploadMetadataOptions } & Sudo & ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<unknown, C, E, void>> {
     const meta = { ...defaultMetadata, ...metadata };
 

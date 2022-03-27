@@ -2,7 +2,7 @@ import { BaseResource } from '@gitbeaker/requester-utils';
 import { RequestHelper } from '../infrastructure';
 import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
-export interface ApplicationAppearenceSchema extends Record<string, unknown> {
+export interface ApplicationAppearanceSchema extends Record<string, unknown> {
   title: string;
   description: string;
   logo: string;
@@ -17,11 +17,11 @@ export interface ApplicationAppearenceSchema extends Record<string, unknown> {
   email_header_and_footer_enabled: boolean;
 }
 
-export class ApplicationSettings<C extends boolean = false> extends BaseResource<C> {
+export class ApplicationAppearance<C extends boolean = false> extends BaseResource<C> {
   show<E extends boolean = false>(
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<ApplicationAppearenceSchema, C, E, void>> {
-    return RequestHelper.get<ApplicationAppearenceSchema>()(
+  ): Promise<GitlabAPIResponse<ApplicationAppearanceSchema, C, E, void>> {
+    return RequestHelper.get<ApplicationAppearanceSchema>()(
       this,
       'application/appearence',
       options,
@@ -30,8 +30,8 @@ export class ApplicationSettings<C extends boolean = false> extends BaseResource
 
   edit<E extends boolean = false>(
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<ApplicationAppearenceSchema, C, E, void>> {
-    return RequestHelper.put<ApplicationAppearenceSchema>()(
+  ): Promise<GitlabAPIResponse<ApplicationAppearanceSchema, C, E, void>> {
+    return RequestHelper.put<ApplicationAppearanceSchema>()(
       this,
       'application/appearence',
       options,

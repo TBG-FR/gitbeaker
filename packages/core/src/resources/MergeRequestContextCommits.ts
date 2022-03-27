@@ -17,7 +17,7 @@ export interface MergeRequestContextCommitSchema extends Record<string, unknown>
   committed_date: string;
 }
 
-export class IssueLinks<C extends boolean = false> extends BaseResource<C> {
+export class MergeRequestContextCommits<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     projectId: string | number,
     mergerequestIId: number,
