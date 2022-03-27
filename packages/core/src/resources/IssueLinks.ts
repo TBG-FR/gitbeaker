@@ -7,26 +7,24 @@ import { MilestoneSchema } from '../templates/types';
 export interface IssueLinkSchema extends Record<string, unknown> {
   id: number;
   iid: number;
-  issue_link_id: number;
   project_id: number;
-  created_at: string;
-  title: string;
+  issue_link_id: number;
   state: string;
-  assignees?: UserSchema[];
-  assignee?: UserSchema;
+  description: string;
+  weight?: number;
+  author: Omit<UserSchema, 'created_at'>;
+  milestone: MilestoneSchema;
+  assignees?: Omit<UserSchema, 'created_at'>[];
+  title: string;
   labels?: string[];
-  author: UserSchema;
-  description?: null;
-  updated_at: string;
-  milestone?: MilestoneSchema;
   user_notes_count: number;
-  due_date?: string;
+  due_date: string;
   web_url: string;
   confidential: boolean;
-  weight?: number;
-  link_type: string;
+  updated_at: string;
   link_created_at: string;
   link_updated_at: string;
+  link_type: 'relates_to' | 'blocks' | 'is_blocked_by';
 }
 
 export interface ExpandedIssueLinkSchema extends Record<string, unknown> {
@@ -38,7 +36,7 @@ export interface ExpandedIssueLinkSchema extends Record<string, unknown> {
     IssueLinkSchema,
     'link_type' | 'link_created_at' | 'link_updated_at' | 'issue_link_id'
   >;
-  link_type: string;
+  link_type: 'relates_to' | 'blocks' | 'is_blocked_by';
 }
 
 export class IssueLinks<C extends boolean = false> extends BaseResource<C> {

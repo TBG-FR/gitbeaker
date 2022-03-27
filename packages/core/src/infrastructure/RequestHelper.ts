@@ -169,11 +169,11 @@ async function getHelper<E extends boolean = false, P extends 'keyset' | 'offset
   return {
     data: newAcc,
     paginationInfo: {
-      idAfter: qs['id_after'] && parseInt(qs['id_after'] as string, 10),
+      idAfter: qs.id_after && parseInt(qs.id_after as string, 10),
       cursor: qs.cursor,
-      perPage: qs['per_page'] && parseInt(qs['per_page'] as string, 10),
-      orderBy: qs['order_by'],
-      sort: qs['sort'],
+      perPage: qs.per_page && parseInt(qs.per_page as string, 10),
+      orderBy: qs.order_by,
+      sort: qs.sort,
     },
   };
 }
@@ -266,9 +266,10 @@ export function del<T = void>() {
   return async <C extends boolean, E extends boolean = false>(
     service: BaseResource<C>,
     endpoint: string,
-    { sudo, showExpanded, ...query }: BaseRequestOptions<E> = {},
+    { sudo, showExpanded, query, ...options }: BaseRequestOptions<E> = {},
   ): Promise<GitlabAPIResponse<T, C, E, void>> => {
     const r = await service.requester.delete(endpoint, {
+      body: options,
       query,
       sudo,
     });

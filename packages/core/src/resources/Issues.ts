@@ -3,6 +3,7 @@ import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type {
   EitherOrNone,
+  UploadMetadataOptions,
   BaseRequestOptions,
   PaginatedRequestOptions,
   Sudo,
@@ -13,7 +14,6 @@ import type { UserSchema } from './Users';
 import type { MergeRequestSchema } from './MergeRequests';
 import type { TodoSchema } from './Todos';
 import type { MilestoneSchema } from '../templates/types';
-import type { UploadMetadata } from './types';
 
 export interface MetricImageSchema extends Record<string, unknown> {
   id: number;
@@ -34,29 +34,6 @@ export interface TimeStatsSchema extends Record<string, unknown> {
   total_time_spent: number;
   human_time_estimate: string;
   human_total_time_spent: string;
-}
-
-export interface IssueLinkSchema extends Record<string, unknown> {
-  id: number;
-  iid: number;
-  project_id: number;
-  issue_link_id: number;
-  state: string;
-  description: string;
-  weight?: number;
-  author: Omit<UserSchema, 'created_at'>;
-  milestone: MilestoneSchema;
-  assignees?: Omit<UserSchema, 'created_at'>[];
-  title: string;
-  labels?: string[];
-  user_notes_count: number;
-  due_date: string;
-  web_url: string;
-  confidential: boolean;
-  updated_at: string;
-  link_type: 'relates_to' | 'blocks' | 'is_blocked_by';
-  link_created_at: string;
-  link_updated_at: string;
 }
 
 export interface IssueSchema extends Record<string, unknown> {
@@ -400,7 +377,7 @@ export class Issues<C extends boolean = false> extends BaseResource<C> {
     projectId: string | number,
     issueIId: number,
     content: string,
-    { metadata, ...options }: { metadata?: UploadMetadata } & Sudo & ShowExpanded<E> = {},
+    { metadata, ...options }: { metadata?: UploadMetadataOptions } & Sudo & ShowExpanded<E> = {},
   ): Promise<GitlabAPIResponse<MetricImageSchema, C, E, void>> {
     const meta = {
       filename: `${Date.now().toString()}.tar.gz`,

@@ -1,6 +1,7 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type {
+  Either,
   BaseRequestOptions,
   PaginatedRequestOptions,
   Sudo,
@@ -33,7 +34,7 @@ export interface AllMergeRequestsOptions {
   scope?: 'created_by_me' | 'assigned_to_me' | 'all';
   authorId?: number;
   authorUsername?: string;
-  asigneeId?: number;
+  assigneeId?: number;
   approverIds?: Array<number>;
   approvedByIds?: Array<number>;
   reviewerId?: number;
@@ -268,11 +269,7 @@ export class MergeRequests<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: AllMergeRequestsOptions &
-      (
-        | { projectId?: string | number; groupId?: never }
-        | { groupId?: string | number; projectId?: never }
-      ) &
+    }: AllMergeRequestsOptions & Either<{ projectId: string | number; }, { groupId: string | number}> &
       PaginatedRequestOptions<E, P> = {} as any,
   ): Promise<GitlabAPIResponse<MergeRequestSchema[], C, E, P>> {
     let prefix = '';
@@ -286,7 +283,7 @@ export class MergeRequests<C extends boolean = false> extends BaseResource<C> {
     return RequestHelper.get<MergeRequestSchema[]>()(
       this,
       `${prefix}merge_requests`,
-      options as AllMergeRequestsOptions & PaginatedRequestOptions<E, P>,
+      options as unknown as AllMergeRequestsOptions & PaginatedRequestOptions<E, P>,
     );
   }
 
