@@ -4,6 +4,7 @@ import { endpoint, RequestHelper } from '../infrastructure';
 import type {
   EitherOrNone,
   UploadMetadataOptions,
+  UserAgentDetailSchema,
   BaseRequestOptions,
   PaginatedRequestOptions,
   Sudo,
@@ -21,12 +22,6 @@ export interface MetricImageSchema extends Record<string, unknown> {
   filename: string;
   file_path: string;
   url: string;
-}
-
-export interface UserAgentDetailSchema extends Record<string, unknown> {
-  user_agent: string;
-  ip_address: string;
-  akismet_submitted: boolean;
 }
 
 export interface TimeStatsSchema extends Record<string, unknown> {

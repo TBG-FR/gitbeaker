@@ -18,13 +18,13 @@ export interface ProjectIssueBoards<C extends boolean = false> extends ResourceI
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     projectId: string | number,
     options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema[], C, E, P>>;
+  ): Promise<GitlabAPIResponse<ProjectIssueBoardSchema[], C, E, P>>;
 
   create<E extends boolean = false>(
     projectId: string | number,
     name: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProjectIssueBoardSchema, C, E, void>>;
 
   createList<E extends boolean = false>(
     projectId: string | number,
@@ -36,7 +36,7 @@ export interface ProjectIssueBoards<C extends boolean = false> extends ResourceI
     projectId: string | number,
     boardId: number,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProjectIssueBoardSchema, C, E, void>>;
 
   editList<E extends boolean = false>(
     projectId: string | number,
@@ -69,7 +69,7 @@ export interface ProjectIssueBoards<C extends boolean = false> extends ResourceI
     projectId: string | number,
     boardId: number,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<ProjectIssueBoardSchema, C, E, void>>;
 
   showList<E extends boolean = false>(
     projectId: string | number,

@@ -1,7 +1,12 @@
 import * as Mime from 'mime/lite';
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { Sudo, ShowExpanded, GitlabAPIResponse, UploadMetadataOptions } from '../infrastructure';
+import type {
+  Sudo,
+  ShowExpanded,
+  GitlabAPIResponse,
+  UploadMetadataOptions,
+} from '../infrastructure';
 
 export const defaultMetadata = {
   filename: `${Date.now().toString()}.tgz`,

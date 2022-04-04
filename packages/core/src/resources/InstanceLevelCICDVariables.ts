@@ -2,7 +2,7 @@ import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
-export interface CICDVariable extends Record<string, unknown> {
+export interface CICDVariableSchema extends Record<string, unknown> {
   key: string;
   variable_type: string;
   value: string;
@@ -13,16 +13,16 @@ export interface CICDVariable extends Record<string, unknown> {
 export class InstanceLevelCICDVariables<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<CICDVariable[], C, E, void>> {
-    return RequestHelper.get<CICDVariable[]>()(this, 'admin/ci/variables', options);
+  ): Promise<GitlabAPIResponse<CICDVariableSchema[], C, E, void>> {
+    return RequestHelper.get<CICDVariableSchema[]>()(this, 'admin/ci/variables', options);
   }
 
   create<E extends boolean = false>(
     key: string,
     value: string,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<CICDVariable, C, E, void>> {
-    return RequestHelper.post<CICDVariable>()(this, 'admin/ci/variables', {
+  ): Promise<GitlabAPIResponse<CICDVariableSchema, C, E, void>> {
+    return RequestHelper.post<CICDVariableSchema>()(this, 'admin/ci/variables', {
       key,
       value,
       ...options,
@@ -33,8 +33,8 @@ export class InstanceLevelCICDVariables<C extends boolean = false> extends BaseR
     keyId: string,
     value: string,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<CICDVariable, C, E, void>> {
-    return RequestHelper.put<CICDVariable>()(this, endpoint`admin/ci/variables/${keyId}`, {
+  ): Promise<GitlabAPIResponse<CICDVariableSchema, C, E, void>> {
+    return RequestHelper.put<CICDVariableSchema>()(this, endpoint`admin/ci/variables/${keyId}`, {
       value,
       ...options,
     });
@@ -43,8 +43,12 @@ export class InstanceLevelCICDVariables<C extends boolean = false> extends BaseR
   show<E extends boolean = false>(
     keyId: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<CICDVariable, C, E, void>> {
-    return RequestHelper.get<CICDVariable>()(this, endpoint`admin/ci/variables/${keyId}`, options);
+  ): Promise<GitlabAPIResponse<CICDVariableSchema, C, E, void>> {
+    return RequestHelper.get<CICDVariableSchema>()(
+      this,
+      endpoint`admin/ci/variables/${keyId}`,
+      options,
+    );
   }
 
   remove<E extends boolean = false>(

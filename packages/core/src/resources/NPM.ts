@@ -2,7 +2,7 @@ import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
 import type { ShowExpanded, GitlabAPIResponse } from '../infrastructure';
 
-export interface Version {
+export interface NPMVersionSchema {
   name: string;
   version: string;
   dist: {
@@ -14,7 +14,7 @@ export interface Version {
 export interface NPMPackageMetadataSchema extends Record<string, unknown> {
   name: string;
   versions: {
-    [version: string]: Version;
+    [version: string]: NPMVersionSchema;
   };
   'dist-tags': {
     [tag: string]: string;

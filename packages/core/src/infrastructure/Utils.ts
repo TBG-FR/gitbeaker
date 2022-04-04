@@ -1,5 +1,16 @@
 import FormData from 'form-data';
 
+export interface UploadMetadataOptions {
+  filename?: string;
+  contentType?: string;
+}
+
+export interface UserAgentDetailSchema extends Record<string, unknown> {
+  user_agent: string;
+  ip_address: string;
+  akismet_submitted: boolean;
+}
+
 export type CamelizeString<T extends PropertyKey> = T extends string
   ? string extends T
     ? string
@@ -9,11 +20,6 @@ export type CamelizeString<T extends PropertyKey> = T extends string
   : T;
 
 export type Camelize<T> = { [K in keyof T as CamelizeString<K>]: T[K] };
-
-export interface UploadMetadataOptions {
-  filename?: string;
-  contentType?: string;
-}
 
 export type Never<T> = {
   [P in keyof T]?: never;

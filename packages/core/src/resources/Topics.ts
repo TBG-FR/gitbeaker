@@ -16,7 +16,7 @@ export interface TopicSchema extends Record<string, unknown> {
   avatar_url: string;
 }
 
-export class Todos<C extends boolean = false> extends BaseResource<C> {
+export class Topics<C extends boolean = false> extends BaseResource<C> {
   all<E extends boolean = false>(
     options?: { search?: string } & PaginatedRequestOptions<E, 'offset'>,
   ): Promise<GitlabAPIResponse<TopicSchema[], C, E, 'offset'>> {

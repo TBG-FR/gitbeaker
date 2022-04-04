@@ -1,6 +1,12 @@
 import { BaseResource } from '@gitbeaker/requester-utils';
 import { endpoint, RequestHelper } from '../infrastructure';
-import type { BaseRequestOptions, Sudo, ShowExpanded, GitlabAPIResponse } from '../infrastructure';
+import type {
+  UserAgentDetailSchema,
+  BaseRequestOptions,
+  Sudo,
+  ShowExpanded,
+  GitlabAPIResponse,
+} from '../infrastructure';
 import type { UserSchema } from './Users';
 
 export type SnippetVisibility = 'private' | 'public' | 'internal';
@@ -30,12 +36,6 @@ export interface ExpandedSnippetSchema extends SnippetSchema {
     path: string;
     raw_url: string;
   }[];
-}
-
-export interface UserAgentDetailSchema extends Record<string, unknown> {
-  user_agent: string;
-  ip_address: string;
-  akismet_submitted: boolean;
 }
 
 export class Snippets<C extends boolean = false> extends BaseResource<C> {

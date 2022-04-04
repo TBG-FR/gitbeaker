@@ -9,7 +9,7 @@ export interface StarredDashboardSchema extends Record<string, unknown> {
   project_id: number;
 }
 
-export class ApplicationSettings<C extends boolean = false> extends BaseResource<C> {
+export class UserStarredMetricsDashboard<C extends boolean = false> extends BaseResource<C> {
   create<E extends boolean = false>(
     projectId: string | number,
     dashboardPath: string,

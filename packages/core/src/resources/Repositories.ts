@@ -9,7 +9,7 @@ import type {
 } from '../infrastructure';
 import type { CommitSchema, CondensedCommitSchema, CommitDiffSchema } from './Commits';
 
-type ArchiveType = 'tar.gz' | 'tar.bz2' | 'tbz' | 'tbz2' | 'tb2' | 'bz2' | 'tar' | 'zip';
+export type ArchiveType = 'tar.gz' | 'tar.bz2' | 'tbz' | 'tbz2' | 'tb2' | 'bz2' | 'tar' | 'zip';
 
 export interface RepositoryChangelogSchema extends Record<string, unknown> {
   notes: string;

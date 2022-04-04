@@ -6,6 +6,7 @@ export type {
   DiscussionSchema,
   DiscussionNoteSchema,
   DiscussionNotePositionSchema,
+  DiscussionNotePositionBaseSchema,
 } from './ResourceDiscussions';
 export type { IssueBoardListSchema, IssueBoardSchema } from './ResourceIssueBoards';
 export type { LabelSchema } from './ResourceLabels';

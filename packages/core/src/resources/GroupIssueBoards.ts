@@ -10,7 +10,7 @@ import type {
 } from '../infrastructure';
 import type { CondensedGroupSchema } from './Groups';
 
-export interface ProjectIssueBoardSchema extends IssueBoardSchema {
+export interface GrouptIssueBoardSchema extends IssueBoardSchema {
   group: CondensedGroupSchema;
 }
 
@@ -18,13 +18,13 @@ export interface GroupIssueBoards<C extends boolean = false> extends ResourceIss
   all<E extends boolean = false, P extends 'keyset' | 'offset' = 'offset'>(
     groupId: string | number,
     options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema[], C, E, P>>;
+  ): Promise<GitlabAPIResponse<GrouptIssueBoardSchema[], C, E, P>>;
 
   create<E extends boolean = false>(
     groupId: string | number,
     name: string,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<GrouptIssueBoardSchema, C, E, void>>;
 
   createList<E extends boolean = false>(
     groupId: string | number,
@@ -36,7 +36,7 @@ export interface GroupIssueBoards<C extends boolean = false> extends ResourceIss
     groupId: string | number,
     boardId: number,
     options?: BaseRequestOptions<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<GrouptIssueBoardSchema, C, E, void>>;
 
   editList<E extends boolean = false>(
     groupId: string | number,
@@ -69,7 +69,7 @@ export interface GroupIssueBoards<C extends boolean = false> extends ResourceIss
     groupId: string | number,
     boardId: number,
     options?: Sudo & ShowExpanded<E>,
-  ): Promise<GitlabAPIResponse<IssueBoardSchema, C, E, void>>;
+  ): Promise<GitlabAPIResponse<GrouptIssueBoardSchema, C, E, void>>;
 
   showList<E extends boolean = false>(
     groupId: string | number,

@@ -269,7 +269,8 @@ export class MergeRequests<C extends boolean = false> extends BaseResource<C> {
       projectId,
       groupId,
       ...options
-    }: AllMergeRequestsOptions & Either<{ projectId: string | number; }, { groupId: string | number}> &
+    }: AllMergeRequestsOptions &
+      Either<{ projectId: string | number }, { groupId: string | number }> &
       PaginatedRequestOptions<E, P> = {} as any,
   ): Promise<GitlabAPIResponse<MergeRequestSchema[], C, E, P>> {
     let prefix = '';

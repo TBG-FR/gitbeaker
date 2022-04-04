@@ -21,7 +21,7 @@ export interface BlobSchema extends Record<string, unknown> {
   project_id: number;
 }
 
-type scopes =
+export type SearchScopes =
   | 'projects'
   | 'issues'
   | 'merge_requests'
@@ -105,7 +105,7 @@ export class Search<C extends boolean = false> extends BaseResource<C> {
   ): Promise<GitlabAPIResponse<ProjectSchema[], C, E, void>>;
 
   all<E extends boolean = false>(
-    scope: scopes,
+    scope: SearchScopes,
     search: string,
     {
       projectId,

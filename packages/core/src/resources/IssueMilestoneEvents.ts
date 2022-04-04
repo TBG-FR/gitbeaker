@@ -18,7 +18,7 @@ export interface IssueMilestoneEvents<C extends boolean = false> {
   ): Promise<GitlabAPIResponse<MilestoneEventSchema, C, E, void>>;
 }
 
-export class IssueMilestonEvents<C extends boolean = false> extends ResourceMilestoneEvents<C> {
+export class IssueMilestoneEvents<C extends boolean = false> extends ResourceMilestoneEvents<C> {
   constructor(options: BaseResourceOptions<C>) {
     /* istanbul ignore next */
     super('projects', 'issues', options);

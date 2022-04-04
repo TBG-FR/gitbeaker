@@ -10,14 +10,8 @@ import type {
 import type {
   DiscussionSchema,
   DiscussionNoteSchema,
-  DiscussionNotePositionBaseOptions,
+  DiscussionNotePositionSchema,
 } from '../templates/types';
-
-export type CommitDiscussionNotePositionOptions = DiscussionNotePositionBaseOptions & {
-  position_type: 'text' | 'image';
-  new_path?: string;
-  old_path?: string;
-};
 
 export interface CommitDiscussions<C extends boolean = false> extends ResourceDiscussions<C> {
   addNote<E extends boolean = false>(
@@ -39,7 +33,7 @@ export interface CommitDiscussions<C extends boolean = false> extends ResourceDi
     projectId: string | number,
     commitId: number,
     body: string,
-    options: { position?: CommitDiscussionNotePositionOptions } & BaseRequestOptions<E>,
+    options: { position?: DiscussionNotePositionSchema } & BaseRequestOptions<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
 
   editNote<E extends boolean = false>(
