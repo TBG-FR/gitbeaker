@@ -17,7 +17,7 @@ export interface CommitDiscussions<C extends boolean = false> extends ResourceDi
   addNote<E extends boolean = false>(
     projectId: string | number,
     commitId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     body: string,
     options?: BaseRequestOptions<E>,
@@ -39,7 +39,7 @@ export interface CommitDiscussions<C extends boolean = false> extends ResourceDi
   editNote<E extends boolean = false>(
     projectId: string | number,
     commitId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options?: BaseRequestOptions<E> & { body?: string },
   ): Promise<GitlabAPIResponse<DiscussionNoteSchema, C, E, void>>;
@@ -47,7 +47,7 @@ export interface CommitDiscussions<C extends boolean = false> extends ResourceDi
   removeNote<E extends boolean = false>(
     projectId: string | number,
     commitId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>>;
@@ -55,7 +55,7 @@ export interface CommitDiscussions<C extends boolean = false> extends ResourceDi
   show<E extends boolean = false>(
     projectId: string | number,
     commitId: number,
-    discussionId: number,
+    discussionId: string,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
 }

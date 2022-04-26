@@ -37,7 +37,7 @@ export interface MergeRequestDiscussions<C extends boolean = false> extends Reso
   addNote<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     body: string,
     options?: BaseRequestOptions<E>,
@@ -59,7 +59,7 @@ export interface MergeRequestDiscussions<C extends boolean = false> extends Reso
   editNote<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options: BaseRequestOptions<E> & { body: string },
   ): Promise<GitlabAPIResponse<MergeRequestDiscussionNoteSchema, C, E, void>>;
@@ -67,7 +67,7 @@ export interface MergeRequestDiscussions<C extends boolean = false> extends Reso
   removeNote<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>>;
@@ -75,7 +75,7 @@ export interface MergeRequestDiscussions<C extends boolean = false> extends Reso
   resolve<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     resolve: boolean,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
@@ -83,7 +83,7 @@ export interface MergeRequestDiscussions<C extends boolean = false> extends Reso
   show<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
 }
@@ -97,7 +97,7 @@ export class MergeRequestDiscussions<C extends boolean = false> extends Resource
   resolve<E extends boolean = false>(
     projectId: string | number,
     mergerequestId: string | number,
-    discussionId: number,
+    discussionId: string,
     resolved: boolean,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>> {

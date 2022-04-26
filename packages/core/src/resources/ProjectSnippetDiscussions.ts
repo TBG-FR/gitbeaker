@@ -14,7 +14,7 @@ export interface ProjectSnippetDiscussions<C extends boolean = false>
   addNote<E extends boolean = false>(
     projectId: string | number,
     snippetId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     body: string,
     options?: BaseRequestOptions<E>,
@@ -36,7 +36,7 @@ export interface ProjectSnippetDiscussions<C extends boolean = false>
   editNote<E extends boolean = false>(
     projectId: string | number,
     snippetId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options: BaseRequestOptions<E> & { body: string },
   ): Promise<GitlabAPIResponse<DiscussionNoteSchema, C, E, void>>;
@@ -44,7 +44,7 @@ export interface ProjectSnippetDiscussions<C extends boolean = false>
   removeNote<E extends boolean = false>(
     projectId: string | number,
     snippetId: string | number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>>;
@@ -52,7 +52,7 @@ export interface ProjectSnippetDiscussions<C extends boolean = false>
   show<E extends boolean = false>(
     projectId: string | number,
     snippetId: string | number,
-    discussionId: number,
+    discussionId: string,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
 }

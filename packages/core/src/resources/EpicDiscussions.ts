@@ -13,7 +13,7 @@ export interface EpicDiscussions<C extends boolean = false> extends ResourceDisc
   addNote<E extends boolean = false>(
     groupId: string | number,
     epicId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     body: string,
     options?: BaseRequestOptions<E>,
@@ -35,7 +35,7 @@ export interface EpicDiscussions<C extends boolean = false> extends ResourceDisc
   editNote<E extends boolean = false>(
     groupId: string | number,
     epicId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options: BaseRequestOptions<E> & { body: string },
   ): Promise<GitlabAPIResponse<DiscussionNoteSchema, C, E, void>>;
@@ -43,7 +43,7 @@ export interface EpicDiscussions<C extends boolean = false> extends ResourceDisc
   removeNote<E extends boolean = false>(
     groupId: string | number,
     epicId: number,
-    discussionId: number,
+    discussionId: string,
     noteId: number,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<void, C, E, void>>;
@@ -51,7 +51,7 @@ export interface EpicDiscussions<C extends boolean = false> extends ResourceDisc
   show<E extends boolean = false>(
     groupId: string | number,
     epicId: number,
-    discussionId: number,
+    discussionId: string,
     options?: Sudo & ShowExpanded<E>,
   ): Promise<GitlabAPIResponse<DiscussionSchema, C, E, void>>;
 }
