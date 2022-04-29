@@ -34,7 +34,7 @@ describe('Browser Import', () => {
 
     // Run import JS
     /* eslint-disable */
-    const importObject = await page.evaluate(() => {
+    const importObject: typeof Gitlab = await page.evaluate(() => {
       // @ts-ignore
       const { Gitlab } = gitbeaker;
       const gl = new Gitlab();

@@ -1,6 +1,7 @@
 import * as pkg from '../../package.json';
 
 jest.mock('@gitbeaker/core', () => ({
+  // eslint-disable-next-line
   ...jest.requireActual('@gitbeaker/core'),
   getAPIMap: jest.fn(() => ({
     Projects: [
@@ -42,6 +43,7 @@ jest.mock('ora', () => ({
 }));
 
 const OLD_ENV = process.env;
+// eslint-disable-next-line
 let Projects;
 
 beforeEach(async () => {
@@ -67,7 +69,7 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
   it('should return an object of available gitbeaker cli.parse environment variables -- --global-args alias', async () => {
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
     expect(output).toBe('No global variables have been set!');
   });
@@ -75,7 +77,7 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
   it('should return an object of available gitbeaker cli.parse environment variables -- -g alias', async () => {
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
     expect(output).toBe('No global variables have been set!');
   });
@@ -85,9 +87,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-token'].value).toBe('token1');
+    expect(JSON.parse(output)['gb-token'].value as string).toBe('token1');
   });
 
   it('should only have the personal token set by alias', async () => {
@@ -95,9 +97,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-token'].value).toBe('glfaketoken');
+    expect(JSON.parse(output)['gb-token'].value as string).toBe('glfaketoken');
   });
 
   it('should only have the oauth token set', async () => {
@@ -105,9 +107,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-oauth-token'].value).toBe('gboafaketoken');
+    expect(JSON.parse(output)['gb-oauth-token'].value as string).toBe('gboafaketoken');
   });
 
   it('should only have the oauth token set by alias', async () => {
@@ -115,9 +117,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-oauth-token'].value).toBe('gloafaketoken');
+    expect(JSON.parse(output)['gb-oauth-token'].value as string).toBe('gloafaketoken');
   });
 
   it('should  only have the job token set', async () => {
@@ -125,9 +127,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-job-token'].value).toBe('gbjfaketoken');
+    expect(JSON.parse(output)['gb-job-token'].value as string).toBe('gbjfaketoken');
   });
 
   it('should only have the job token set by alias', async () => {
@@ -135,9 +137,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-job-token'].value).toBe('gljfaketoken');
+    expect(JSON.parse(output)['gb-job-token'].value as string).toBe('gljfaketoken');
   });
 
   it('should only have the host set', async () => {
@@ -145,9 +147,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-host'].value).toBe('www.gbfakehost.com');
+    expect(JSON.parse(output)['gb-host'].value as string).toBe('www.gbfakehost.com');
   });
 
   it('should only have the host set by alias', async () => {
@@ -155,9 +157,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-host'].value).toBe('www.ghfakehost.com');
+    expect(JSON.parse(output)['gb-host'].value as string).toBe('www.ghfakehost.com');
   });
 
   it('should only have the version set', async () => {
@@ -165,9 +167,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-version'].value).toBe(4);
+    expect(JSON.parse(output)['gb-version'].value as string).toBe(4);
   });
 
   it('should only have the version set by alias', async () => {
@@ -175,9 +177,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-version'].value).toBe(4);
+    expect(JSON.parse(output)['gb-version'].value as string).toBe(4);
   });
 
   it('should only have sudo set', async () => {
@@ -185,9 +187,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-sudo'].value).toBe('gbsudoaccount');
+    expect(JSON.parse(output)['gb-sudo'].value as string).toBe('gbsudoaccount');
   });
 
   it('should only have sudo set by alias', async () => {
@@ -195,9 +197,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-sudo'].value).toBe('glsudoaccount');
+    expect(JSON.parse(output)['gb-sudo'].value as string).toBe('glsudoaccount');
   });
 
   it('should only have the camelize set', async () => {
@@ -205,9 +207,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-camelize'].value).toBe(true);
+    expect(JSON.parse(output)['gb-camelize'].value as string).toBe(true);
   });
 
   it('should only have the camelize set by alias', async () => {
@@ -215,9 +217,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-camelize'].value).toBe(true);
+    expect(JSON.parse(output)['gb-camelize'].value as string).toBe(true);
   });
 
   it('should only have the profile token set', async () => {
@@ -225,9 +227,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-profile-token'].value).toBe('gbptoken');
+    expect(JSON.parse(output)['gb-profile-token'].value as string).toBe('gbptoken');
   });
 
   it('should only have the profile token set by alias', async () => {
@@ -235,9 +237,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-profile-token'].value).toBe('glptoken');
+    expect(JSON.parse(output)['gb-profile-token'].value as string).toBe('glptoken');
   });
 
   it('should only have the profile mode set', async () => {
@@ -245,9 +247,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-profile-mode'].value).toBe('gbpmode');
+    expect(JSON.parse(output)['gb-profile-mode'].value as string).toBe('gbpmode');
   });
 
   it('should only have the profile mode set by alias', async () => {
@@ -255,9 +257,9 @@ describe('gitbeaker -g -- CLI global Enviroment Variables', () => {
 
     // eslint-disable-next-line
     const { cli } = require('../../src/cli');
-    const { output } = await cli.parse('-g');
+    const { output }: { output: string } = await cli.parse('-g');
 
-    expect(JSON.parse(output)['gb-profile-mode'].value).toBe('glpmode');
+    expect(JSON.parse(output)['gb-profile-mode'].value as string).toBe('glpmode');
   });
 });
 

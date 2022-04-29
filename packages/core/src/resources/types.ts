@@ -278,3 +278,6 @@ export {
   UserMembershipSchema,
 } from './Users';
 export { UserSSHKeySchema } from './UserSSHKeys';
+
+// All
+export { Gitlab } from './Gitlab';

@@ -104,7 +104,7 @@ export class ResourceDiscussions<C extends boolean = false> extends BaseResource
     const opts: Record<string, unknown> = { ...options };
 
     if (position) {
-      const p = decamelizeKeys(position);
+      const p: Record<string, unknown> = decamelizeKeys(position);
 
       opts.isForm = true;
       opts.body = body;

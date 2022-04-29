@@ -109,8 +109,8 @@ async function getHelper<E extends boolean = false, P extends 'keyset' | 'offset
 ): Promise<any> {
   const { sudo, showExpanded, maxPages, ...query } = options || {};
   const response = await service.requester.get(endpoint, { query, sudo });
-  const { headers, status } = response;
-  let { body } = response;
+  const { headers, status }: { headers: Record<string, string>; status: string } = response;
+  let { body }: { body: Record<string, unknown> | Record<string, unknown>[] } = response;
 
   if (!Array.isArray(body)) {
     if (Object.keys(body).length > 0) {
@@ -125,11 +125,12 @@ async function getHelper<E extends boolean = false, P extends 'keyset' | 'offset
       status,
     };
   }
+
   // Camelize response body if specified
   if (service.camelize) body = camelizeKeys(body);
 
   // Handle array responses
-  const newAcc = [...acc, ...body];
+  const newAcc = [...acc, ...(body as Record<string, unknown>[])];
   const { next }: { next: string } = parseLink(headers.link);
   const { query: qs = {} } = next ? parseQueryString(next, { parseNumbers: true }) : {};
   const withinBounds = maxPages
@@ -187,7 +188,7 @@ export function get<T>() {
     service: BaseResource<C>,
     endpoint: string,
     options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<T, C, E, P>> => getHelper<E, P>(service, endpoint, options as any);
+  ): Promise<GitlabAPIResponse<T, C, E, P>> => getHelper<E, P>(service, endpoint, options);
 }
 
 export function post<T>() {

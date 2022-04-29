@@ -54,7 +54,7 @@ export function appendFormFromObject(object: Record<string, unknown>): FormData 
   const form = new FormData();
 
   Object.entries(object).forEach(([k, v]) => {
-    if (Array.isArray(v)) form.append(k, v[0], v[1]);
+    if (Array.isArray(v)) form.append(k, v[0] as string, v[1] as string);
     else form.append(k, v as any);
   });
 
