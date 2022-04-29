@@ -6,7 +6,6 @@ const API = presetResourceArguments(Resources, { requesterFn });
 
 export { Types } from '@gitbeaker/core';
 
-
 export const {
   ApplicationAppearance,
   ApplicationPlanLimits,

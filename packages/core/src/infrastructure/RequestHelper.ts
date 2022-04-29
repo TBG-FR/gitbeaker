@@ -104,10 +104,11 @@ export type GitlabAPIResponse<
 async function getHelper<E extends boolean = false, P extends 'keyset' | 'offset' | void = void>(
   service: BaseResource<boolean>,
   endpoint: string,
-  options: PaginatedRequestOptions<E, P> & { maxPages?: number },
+  options?: PaginatedRequestOptions<E, P> & { maxPages?: number },
   acc: Record<string, unknown>[] = [],
 ): Promise<any> {
-  const { sudo, showExpanded, maxPages, ...query } = options || {};
+  const { sudo, showExpanded, maxPages, ...query } =
+    options || ({} as PaginatedRequestOptions<E, 'offset'>);
   const response = await service.requester.get(endpoint, { query, sudo });
   const { headers, status }: { headers: Record<string, string>; status: string } = response;
   let { body }: { body: Record<string, unknown> | Record<string, unknown>[] } = response;
@@ -188,7 +189,8 @@ export function get<T>() {
     service: BaseResource<C>,
     endpoint: string,
     options?: PaginatedRequestOptions<E, P>,
-  ): Promise<GitlabAPIResponse<T, C, E, P>> => getHelper<E, P>(service, endpoint, options);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  ): Promise<GitlabAPIResponse<T, C, E, P>> => getHelper<E, P>(service, endpoint, options as any);
 }
 
 export function post<T>() {

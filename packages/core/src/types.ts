@@ -8,6 +8,6 @@ export {
   OffsetPaginationRequestOptions,
   PaginatedRequestOptions,
   ExpandedResponse,
-  PaginationResponse,
+  PaginatedResponse,
   CamelizedResponse,
 } from './infrastructure';
