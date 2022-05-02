@@ -1,4 +1,4 @@
-import { BaseResource } from '../../src';
+import { BaseResource } from '../../src/BaseResource';
 import { createRequesterFn } from '../../src/RequesterUtils';
 
 describe('Creation of BaseResource instance', () => {
