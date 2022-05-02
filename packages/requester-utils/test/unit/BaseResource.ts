@@ -65,17 +65,6 @@ describe('Creation of BaseResource instance', () => {
     expect(service.headers['job-token']).toBe('1234');
   });
 
-  it('should allow for the API version to be modified', () => {
-    const service = new BaseResource({
-      requesterFn: jest.fn(),
-      host: 'https://testing.com',
-      token: '1234',
-      version: 3,
-    });
-
-    expect(service.url).toBe('https://testing.com/api/v3/');
-  });
-
   it('should set the X-Profile-Token header if the profileToken option is given', () => {
     const service = new BaseResource({
       requesterFn: jest.fn(),
@@ -151,15 +140,14 @@ describe('Creation of BaseResource instance', () => {
     expect(service.url).toBe('https://gitlab.com/api/v4/test');
   });
 
-  it('should allow for prefix resource urls to be set without host or version defaults', () => {
+  it('should allow for prefix resource urls to be set without host defaults', () => {
     const service = new BaseResource({
       requesterFn: jest.fn(),
-      version: 3,
       host: 'https://fakehost.com',
       prefixUrl: 'test',
     });
 
-    expect(service.url).toBe('https://fakehost.com/api/v3/test');
+    expect(service.url).toBe('https://fakehost.com/api/v4/test');
   });
 
   it('should throw an error if requesterFn is not passed', () => {

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import FormData from 'form-data';
 import 'jest-extended';
+const FormData = require("form-data");
 import {
   createRequesterFn,
   defaultOptionsHandler,
@@ -9,7 +9,7 @@ import {
   DefaultRequestReturn,
 } from '../../src/RequesterUtils';
 
-const methods = ['get', 'put', 'delete', 'stream', 'post'];
+const methods = ['get', 'put', 'patch', 'delete', 'stream', 'post'];
 
 describe('defaultOptionsHandler', () => {
   const serviceOptions = {
@@ -37,7 +37,7 @@ describe('defaultOptionsHandler', () => {
   });
 
   it('should not stringify body if it of type FormData', () => {
-    const testBody = new FormData();
+    const testBody: globalThis.FormData = new FormData() as unknown as globalThis.FormData
     const { body } = defaultOptionsHandler(serviceOptions, { body: testBody, method: 'post' });
 
     expect(body).toBeInstanceOf(FormData);

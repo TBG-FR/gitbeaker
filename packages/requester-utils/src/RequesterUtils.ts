@@ -1,5 +1,4 @@
 import { decamelizeKeys } from 'xcase';
-import FormData from 'form-data';
 import { stringify } from 'qs';
 
 // Types
